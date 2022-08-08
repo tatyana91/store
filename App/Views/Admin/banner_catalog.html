@@ -1,0 +1,44 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+{% block content %}
+<form action='/admin/banners_catalog?act={{act}}&id={{banner.id}}' method='POST' enctype='multipart/form-data'>
+    Страницы (выбор нескольких через ctrl, выбор диапазона через shift):<br>
+    <select name="pages[]" multiple style="height: 350px">
+        {% for site_page in site_pages %}
+            {% set selected = "" %}
+            {% for page in banner.pages %}
+                {% if ((page.page_table ~ "_" ~ page.page_id) == site_page.data) %}
+                    {% set selected = "selected" %}
+                {% endif %}
+            {% endfor %}
+            <option value="{{site_page.data}}" {{selected}}>{{site_page.full_title}}</option>
+        {% endfor %}
+    </select>
+    Ссылка на страницу (без домена):<br>
+    <input type='text' name='url' value='{{banner.url}}'/>
+    Баннер (1191px*149px, перед загрузкой картинки оптимизируйте её с помощью сервиса <a href='https://tinypng.com/' target='_blank'>tinypng</a>):<br>
+    <input type='file' name='banner'/>
+    {% if (banner.path) %}
+        <img src='/images/banners_catalog/{{banner.path}}' style='max-width: 500px'/><br>
+        <div><input type='checkbox' name='del_file' value=''/> Удалить</div><br>
+    {% endif %}
+    <input type="hidden" name="path" value="{{banner.path}}">
+    Баннер мобильной версии (510px*170px, перед загрузкой картинки оптимизируйте её с помощью сервиса <a href='https://tinypng.com/' target='_blank'>tinypng</a>):<br>
+    <input type='file' name='banner2'/>
+    {% if (banner.path2) %}
+    <img src='/images/banners_catalog/{{banner.path2}}' style='max-width: 300px'/><br>
+    <div><input type='checkbox' name='del_file2' value=''/> Удалить</div><br>
+    {% endif %}
+    <input type="hidden" name="path2" value="{{banner.path2}}">
+    Альт картинки (описание картинки несколькими словами):<br>
+    <input type='text' name='alt' value='{{banner.alt}}'/>
+    Рейтинг:<br>
+    <input type='text' name='rate' value='{{banner.rate}}'/>
+    <input type='hidden' name='id' value='{{banner.id}}'>
+    <input type='submit' name='edit' value='Сохранить'>
+</form>
+{% endblock %}

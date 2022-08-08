@@ -1,0 +1,22 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+    {% set show_menu = '' %}
+    {% if ref_char.show_menu == 1 %}
+        {% set show_menu = 'checked' %}
+    {% endif %}
+
+    <form action='/admin/ref_chars?act={{act}}&id={{ref_char.id}}' method='POST' enctype='multipart/form-data'>
+        <div class="item-title">Название:</div>
+        <input type='text' name='title' value='{{ref_char.title}}'/>
+        <div class="item-title">Рейтинг:</div>
+        <input type='text' name='rate' value='{{ref_char.rate}}'/>
+        <input type='hidden' name='id' value='{{ref_char.id}}'/>
+        <input type='hidden' name='act' value='{{act}}'/>
+        <input type='submit' value='Сохранить'>
+    </form>
+{% endblock %}

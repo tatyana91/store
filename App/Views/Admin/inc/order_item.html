@@ -1,0 +1,49 @@
+{% if (can_edit == 1 and can_edit_products == 1) %}
+    <tr class="cart-item js-cart-item" data-id="{{product.id}}">
+        <td>{{ loop_index }}</td>
+        <td>
+            <select class="js-cart-item-product_id">
+                <option value="0">не выбрано</option>
+                {% for product_variant in products %}
+                    {% set selected = '' %}
+                    {% if (product_variant.id == product.product_id) %}
+                        {% set selected = 'selected' %}
+                    {% endif %}
+                    <option value="{{product_variant.id}}" {{selected}}>{{product_variant.title}} - {{product_variant.free_qty}}ед.</option>
+                {% endfor %}
+            </select>
+        </td>
+        <td>
+            <span class="js-cart-item-price">{{product.price}}</span>
+            <span> руб.</span>
+        </td>
+        <td>
+            <input class="js-cart-item-count" value="{{product.count}}" style="width: calc(100% - 35px);">
+            <span> ед.</span>
+        </td>
+        <td>
+            <span class="js-cart-item-cost">{{product.cost}}</span>
+            <span> руб.</span>
+        </td>
+        <td>
+            <div class="control-btn">
+                <a href="javascript:void(0)" class="js-delete-cart-item" title="Удалить">
+                    Удалить
+                </a>
+            </div>
+        </td>
+    </tr>
+{% else %}
+    <tr class="cart-item js-cart-item" data-id="{{product.id}}">
+        <td>{{ loop_index }}</td>
+        <td>
+            <div class="cart__item-name">
+                <a href="/{{product.full_url}}" class="button button_link" target="_blank">{{product.title}}</a>
+            </div>
+            <div class="cart__item-art">{{product.code}}</div>
+        </td>
+        <td>{{product.price}} руб.</td>
+        <td>{{product.count}} {{params.ref_counters[product.ct].name}}</td>
+        <td>{{product.cost}} руб.</td>
+    </tr>
+{% endif %}

@@ -1,0 +1,13 @@
+<div>Ваш заказ №{{ order_id }} на сумму {{ order_cost }} руб успешно создан.</div>
+<div>Наши менеджеры свяжутся с вами в ближайшее время.</div>
+
+{% if (payment_type_info) %}
+    <div class="paymentLinkInfo">{{ payment_type_info|raw }}</div>
+{% endif %}
+
+{% if (payment_link) %}
+    <div class="paymentLinkInfo">
+        <div>Вы будете перенаправлены на форму оплаты через <span class="js-checkout-timer checkoutTimer">15 секунд</span>.</div>
+        <div>Если этого не произошло автоматически, то для перехода на форму оплаты <a href="{{ payment_link }}">нажмите здесь</a>.</div>
+    </div>
+{% endif %}

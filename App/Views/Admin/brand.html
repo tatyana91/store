@@ -1,0 +1,36 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+{% block content %}
+<form action='/admin/brands?act={{act}}&id={{brand.id}}' method='POST' enctype='multipart/form-data'>
+    <div class="item-title">Название:</div>
+    <input type='text' name='title' value='{{brand.title}}'/>
+    <div class="item-title">Ссылка для меню (генерируется автоматом из названия):</div>
+    <input type='text' name='url' value='{{brand.url}}'/>
+    <div class="item-title">Лого (желательно 119px*119px, перед загрузкой картинки оптимизируйте её с помощью сервиса <a href='https://tinypng.com/' target='_blank'>tinypng</a></span>):</div>
+    <input type='file' name='logo'/>
+    {% if (brand.path) %}
+        <img src='/images/brands/{{brand.path}}' style='max-width: 150px'/><br>
+        <div><input type='checkbox' name='del_file' value=''/> Удалить</div><br>
+    {% endif %}
+    <input type="hidden" name="path" value="{{brand.path}}">
+    <div class="item-title">Характеристика:</div>
+    <select name="char_value_id">
+        <option value="0">не выбрано</option>
+        {% for brand_char_value in brand_char_values %}
+            {% set selected = '' %}
+            {% if (brand_char_value.id == brand.char_value_id) %}
+                {% set selected = 'selected' %}
+            {% endif %}
+            <option value="{{brand_char_value.id}}" {{selected}}>{{brand_char_value.value}} ({{brand_char_value.count_products}} шт.)</option>
+        {% endfor %}
+    </select>
+    <div class="item-title">Рейтинг:</div>
+    <input type='text' name='rate' value='{{brand.rate}}'/>
+    <input type='hidden' name='id' value='{{brand.id}}'>
+    <input type='submit' name='edit' value='Сохранить'>
+</form>
+{% endblock %}

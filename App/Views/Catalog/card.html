@@ -1,0 +1,174 @@
+{% extends "/base.html" %}
+
+{% block title %}
+    <title>{{product.seo.title}}</title>
+    <meta name="Keywords" content="{{product.seo.keywords}}">
+    <meta name="Description" content="{{product.seo.description}}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <main class="content content_inner" itemscope itemtype="http://schema.org/Product">
+            {{ include('/inc/page_banners.html', {
+                page_banners: product.banners
+            })
+            }}
+            {{ include('/inc/breadcrumbs.html', {
+                    page_breadcrumbs: product.breadcrumbs,
+                    page_title: product.title
+                })
+            }}
+            <div class="page__title">
+                <h1 class="h1" itemprop="name">{{product.title}}</h1>
+            </div>
+            <div class="row product js-cart-item" data-id="{{product.id}}">
+              <div class="col-xs-12 col-lg-5">
+                  <div class="card-sticky">
+                      <div class="cardSlider js-card-slider ">
+                          {% if product.photos|length %}
+                          {% set image_org = true %}
+                          {% for photo in product.photos %}
+                          <div>
+                              <img src="/images/gallery/{{product.id}}/{{photo.path_large}}"
+                                   {{ (image_org) ? 'itemprop="image"' : '' }}
+                              alt="{{photo.alt}}">
+                          </div>
+                          {% if (image_org) %}
+                          {% set image_org = false %}
+                          {% endif %}
+                          {% endfor %}
+                          {% else %}
+                          <div class="">
+                              <img src="/images/nophoto.png" alt="">
+                          </div>
+                          {% endif %}
+                      </div>
+                  </div>
+              </div>
+              <div class="col-xs-12 col-lg-7">
+                  <div class="product__features">
+                      <div class="product__feature product__labels">
+                          {% if product.new == 1 %}
+                              <span class="product__label product__label_new">Новинка</span>
+                          {% endif %}
+                          {% if product.popular == 1 %}
+                              <span class="product__label product__label_popular">Популярное</span>
+                          {% endif %}
+                          {% if (product.price_sale) %}
+                            <span class="product__label product__label_sale">Скидка</span>
+                          {% endif %}
+                          {% if (product.sales|length) %}
+                              <a href="/akcii" title="Перейти на страницу акций"><span class="product__label product__label_sale">Акция</span></a>
+                          {% endif %}
+                      </div>
+                      <div class="product__feature product__chars">
+                          {% for char in product.chars %}
+                              <div class="product__char char row">
+                                  <div class="char__title col-8">{{char.char_title}}</div>
+                                  <div class="char__value col-4">{{char.char_value_title}}</div>
+                              </div>
+                          {% endfor %}
+                      </div>
+                      <!--
+                      {% if product.description|length > 0 %}
+                          <div class="product__feature product__short-desc">
+                              {{product.description}}
+                              <br>
+                              <a href="#description">Полное описание</a>
+                          </div>
+                      {% endif %}
+                      -->
+
+                      {% if (product.free_qty > 0) %}
+                          {% set counter_class = "many-counters" %}
+                          {% set counter_title = "В наличии: " %}
+                          {% set counter_title2 = product.free_qty ~ " " ~ product.ct_name %}
+                      {% else %}
+                          {% set counter_class = "few-counters" %}
+                          {% set counter_title = "" %}
+                          {% set counter_title2 = "Нет в наличии" %}
+                      {% endif %}
+
+                      <div class="product__feature product__price-block" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+
+                          <meta itemprop="priceCurrency" content="RUB">
+                          {% if (product.price_sale) %}
+                                <meta itemprop="price" content="{{product.price_sale}}">
+                                <div class="product__priceOld">{{product.price}} руб.</div>
+                                <div class="product__price">{{product.price_sale}} руб.</div>
+                          {% else %}
+                                <meta itemprop="price" content="{{product.price}}">
+                                <div class="product__price">{{product.price}} руб.</div>
+                          {% endif %}
+
+                          <div class="product__count-info">{{counter_title}} <span class="{{counter_class}}">{{counter_title2}}</span></div>
+                          {% if (counter_title) %}
+                            <link itemprop="availability" href="http://schema.org/InStock">
+                          {% endif %}
+                      </div>
+
+                      {% if (product.free_qty > 0) %}
+                          <div class="product__feature product__add-to-cart">
+                              {% if product.in_cart == 0 %}
+                                <div class="card__inputs js-card-inputs" data-id="{{product.id}}"></div>
+                                <button class="button button_default card-btn js-card-btn js-add-to-cart"
+                                        data-id="{{product.id}}">В корзину</button>
+                              {% else %}
+                                  <div class="card__inputs js-card-inputs" data-id="{{product.id}}">
+                                      {{ include('/inc/card_change.html', {
+                                      card_product_id: product.id,
+                                      card_product_count: product.in_cart
+                                      })
+                                      }}
+                                  </div>
+                                 <!--<button class="button button_default card-btn js-card-btn js-remove-from-cart"
+                                         data-id="{{product.id}}">Убрать из корзины</button>-->
+                                  <button class="button button_default card-btn js-card-btn">
+                                      <a href="/cart">Перейти в корзину</a>
+                                  </button>
+                              {% endif %}
+                          </div>
+                      {% else %}
+                          <div class="product__feature">
+                              <button class="button button_default card__button js-preorder-popup"
+                                      data-id="{{product.id}}"
+                                      data-href="/{{product.full_url}}"
+                                      data-title="{{product.title}}">Под заказ</button>
+                          </div>
+                      {% endif %}
+
+                      {% if (product.sales|length) %}
+                          <div class="product__feature">
+                              {% if (product.sales|length == 1) %}
+                              На этот товар действует акция:
+                              {% else %}
+                              На этот товар действуют акции:
+                              {% endif %}
+                              <ul class="sale-info">
+                                  {% for sale in product.sales %}
+                                      <li>
+                                          <a href="/{{sales_pages[sale].full_url}}" class="sale-info__link">{{sales_pages[sale].title}}</a>
+                                      </li>
+                                  {% endfor %}
+                              </ul>
+                          </div>
+                      {% endif %}
+                  </div>
+
+                  {% if product.text|length > 0 %}
+                  <div class="description product__description" id="description">
+                      <h2 class="description__title">Описание товара</h2>
+                      <div class="tinymce-content" itemprop="description">{{product.text|raw}}</div>
+                  </div>
+                  {% endif %}
+              </div>
+            </div>
+
+            {{ include('/inc/goods.html', {
+                goods_info: product.goods_info,
+                goods_info_title: 'С этим товаром покупают:'
+                })
+            }}
+        </main>
+    </div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div>{{info|raw}}</div>
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>№п/п</th>
+            <th>Складской код</th>
+            <th>Название/Почта/Телефон на складе</th>
+            <th>Клиент на сайте</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% set index = 1 %}
+
+            {% for counterparty in depot_counterparty %}
+                <tr>
+                    <td>{{index}}</td>
+                    <td class="js-depot-counterparty"
+                        data-user_id="{{counterparty.site_user.id}}">
+                        {{counterparty.id}}
+                    </td>
+                    <td>
+                        {{ (counterparty.name) ? counterparty.name : '-' }}<br>
+                        {{ (counterparty.email) ? counterparty.email : '-' }}<br>
+                        {{ (counterparty.phone) ? counterparty.phone : '-' }}
+                    </td>
+                    <td>
+                        <select class="js-save-counterparty-bounds"
+                                data-guid="{{counterparty.id}}"
+                                data-title='{{counterparty.name}}'>
+                            <option value="0">не выбрано</option>
+                            {% for site_user in site_users %}
+                                <option value="{{site_user.id}}" {{(counterparty.site_user.id == site_user.id) ? 'selected' : ''}}>
+                                    {{site_user.name}} {{site_user.phone}} {{site_user.email}}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                {% set index = index + 1 %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

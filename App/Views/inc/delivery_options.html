@@ -1,0 +1,3 @@
+{% for delivery_time_item in delivery_time_items %}
+    <option value="{{delivery_time_item.time}}" {{ delivery_time_item.default ? 'selected' : '' }}>{{delivery_time_item.time}}</option>
+{% endfor %}

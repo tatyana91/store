@@ -1,0 +1,32 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+    <form action='/admin/seo?act={{act}}&id={{seo_item.id}}' method='POST' class="js-seo-item">
+        <div class="item-title">Страница сайта:</div>
+        <select name="page">
+            <option value="0">не выбрано</option>
+            {% for site_page in site_pages %}
+                {% set selected = "" %}
+                {% if ((seo_item.table_name ~ "_" ~ seo_item.item_id) == site_page.data) %}
+                    {% set selected = "selected" %}
+                {% endif %}
+                <option value="{{site_page.data}}" {{selected}}>{{site_page.full_title}}</option>
+            {% endfor %}
+        </select>
+
+        <div class="item-title">Заголовок страницы (всего символов: <span>{{seo_item.title|length}}</span>):</div>
+        <input type='text' name='title' value='{{seo_item.title}}'/>
+        <div class="item-title">Описание страницы (всего символов: <span>{{seo_item.description|length}}</span>):</div>
+        <textarea name='description'>{{seo_item.description}}</textarea>
+        <div class="item-title">Ключевые слова (всего символов: <span>{{seo_item.keywords|length}}</span>):</div>
+        <textarea name='keywords'>{{seo_item.keywords}}</textarea>
+
+        <input type='hidden' name='id' value='{{seo_item.id}}'/>
+        <input type='hidden' name='act' value='{{act}}'/>
+        <input type='submit' value='Сохранить'>
+    </form>
+{% endblock %}

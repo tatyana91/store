@@ -1,0 +1,18 @@
+php_flag display_startup_errors on
+php_value log_errors "On"
+php_value error_reporting E_ALL
+php_value error_log /home/account/domains/site.ru/public_html/logs/errors/php.log
+
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
+
+RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^www\.(.*)$
+RewriteRule ^(.*)$ https://%1/$1 [L,R=301]
+
+RewriteCond %{REQUEST_FILENAME}  !-f
+RewriteRule ^(.*)$ public/index.php?$1 [L,QSA]

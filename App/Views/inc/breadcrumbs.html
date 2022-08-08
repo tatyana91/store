@@ -1,0 +1,14 @@
+<div class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList">
+    {% set content = 1 %}
+    {% for breadcrumbs in page_breadcrumbs %}
+        <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a itemprop="item" class="breadcrumbs__link" href="{{breadcrumbs.url}}">
+                <span class="breadcrumbs__text" itemprop="name">{{breadcrumbs.title}}</span>
+            </a>
+            <meta itemprop="position" content="{{content}}"/>
+        </span>
+        <span class="breadcrumbs__divider"></span>
+        {% set content = content + 1 %}
+    {% endfor %}
+    <span class="breadcrumbs__text">{{page_title}}</span>
+</div>

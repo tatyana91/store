@@ -1,0 +1,24 @@
+{% extends "/base.html" %}
+
+{% set page_title = page.title %}
+{% set page_breadcrumbs = page.breadcrumbs %}
+{% set page_banners = page.banners %}
+
+{% block page_content %}
+<div class="page__title">
+    <h1 class="h1">{{page.title}}</h1>
+</div>
+<div class="catalogue">
+    <div class="container-fluid">
+        {% for category in products %}
+            <h2 class="catalogue__subtitle">{{category.title}}</h2>
+            <div class="row" style="margin-bottom: 30px;">
+                {% for product in category.products %}
+                    {{ include('/inc/card.html', {product: product}) }}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="tinymce-content">{{page.text|raw}}</div>
+{% endblock %}

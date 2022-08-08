@@ -1,0 +1,16 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div class='table-responsive'>
+    <div class="control-btn" style="max-width: 255px;">
+        <a href='/admin/export?act=get_xls' title='Выгрузить'>
+            Выгрузка для Яндекс.Маркета (.xls)
+        </a>
+    </div>
+</div>
+{% endblock %}

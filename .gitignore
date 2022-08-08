@@ -1,0 +1,7 @@
+.idea
+.git
+vendor
+public/logs
+public/markup
+public/design
+composer.phar

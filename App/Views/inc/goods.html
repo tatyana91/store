@@ -1,0 +1,20 @@
+{% if goods_info.items|length > 0 %}
+<div class="container" style="padding-top:0; padding-bottom: 0">
+    <section class="content__section section">
+        <h2 class="section__title" style="text-align: left;font-size: 22px;">{{goods_info_title}}</h2>
+        <div class="section__cardlist cardlist row js-category" data-id="{{product.id}}">
+            {% for product in goods_info.items %}
+                {{ include('/inc/card.html', {product: product}) }}
+            {% endfor %}
+        </div>
+        {% if goods_info.items_count > 5 %}
+        <div class="more">
+            <a class="more__link js-show-move-products" href="javascript:void(0)"
+               data-block="1" data-products_count="{{goods_info.items_count}}" data-category="{{product.id}}" data-goods="{{goods_info.items_str}}">
+                Загрузить еще
+            </a>
+        </div>
+        {% endif %}
+        </section>
+</div>
+{% endif %}

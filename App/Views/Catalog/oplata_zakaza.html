@@ -1,0 +1,39 @@
+{% extends "/base.html" %}
+
+{% set page_title = page.title %}
+{% set page_breadcrumbs = page.breadcrumbs %}
+{% set page_banners = page.banners %}
+
+{% block page_content %}
+<h1 class="h1">{{page.title}}</h1>
+
+<div class="tinymce-content">
+    {% if (error) %}
+        <div class="paymentOrderNotice">{{error}}</div>
+    {% else %}
+        <div>
+            <div class="paymentOrderNotice">{{ order.notice }}</div>
+            {% if (order.status == 1) %}
+                <div>
+                    Заказ №{{order.id}} на сумму {{order.total_cost}} руб ожидает оплаты наличными или картой при получении.<br>
+                    Для уточнения актуальности заказа мы свяжемся с вами в ближайшее время.<br>
+                    Вы так же можете самостоятельно связаться с нами по номеру телефона <a href="tel:{{settings.phone}}">{{settings.phone}}</a>.
+                </div>
+            {% elseif (order.status == 2) %}
+                <div>
+                    Заказ №{{order.id}} на сумму {{order.total_cost}} руб ожидает оплаты.<br>
+                    Для оплаты заказа перейдите по ссылке
+                    <a href='{{order.paymentFormUrl}}' class='button button_link' target='_blank'>{{order.paymentFormUrl|slice(0, 52)}}...</a>
+                    (ссылка действительна до {{order.paymentFormUrlLifeTime|date('d.m.Y H:i')}}).
+                </div>
+            {% elseif (order.status == 3) %}
+                <div>Заказ №{{order.id}} на сумму {{order.total_cost}} руб успешно оплачен.</div>
+            {% elseif (order.status == 4) %}
+                <div>Заказ №{{order.id}} на сумму {{order.total_cost}} руб выполнен.</div>
+            {% elseif (order.status == 5) %}
+                <div>Заказ №{{order.id}} на сумму {{order.total_cost}} руб отклонен.</div>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

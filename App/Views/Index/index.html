@@ -1,0 +1,108 @@
+{% extends "/base.html" %}
+
+{% block content %}
+    <div class="container">
+        <main class="content">
+            <div class="slider js-slider">
+                {% if banners|length > 0 %}
+                {% for banner in banners %}
+                {% if (banner.url) %}
+                <a class="slider__item" href="{{banner.url}}">
+                    {% if (banner.text1 != '') %}
+                    <h1 class="slider__title">{{banner.text1}}</h1>
+                    {% endif %}
+                    {% if (banner.text2 != '') %}
+                    <p class="slider__subtitle">{{banner.text2}}</p>
+                    {% endif %}
+                    <picture>
+                        <source srcset="/images/banners/{{banner.path2}}" media="(max-width: 768px)">
+                        <img class="slider__image" alt="{{banner.alt}}" src="/images/banners/{{banner.path}}">
+                    </picture>
+                </a>
+                {% else %}
+                <div class="slider__item">
+                    {% if (banner.text1 != '') %}
+                    <h1 class="slider__title">{{banner.text1}}</h1>
+                    {% endif %}
+                    {% if (banner.text2 != '') %}
+                    <p class="slider__subtitle">{{banner.text2}}</p>
+                    {% endif %}
+                    <picture>
+                        <source srcset="/images/banners/{{banner.path2}}" media="(max-width: 768px)">
+                        <img class="slider__image" alt="{{banner.alt}}" src="/images/banners/{{banner.path}}">
+                    </picture>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                <div>
+                    <h1 class="slider__title">Товары для реабилитации</h1>
+                    <p class="slider__subtitle">C заботой о близких</p>
+                    <img class="slider__image" src="/images/slider.jpg" alt="">
+                </div>
+                {% endif %}
+            </div>
+
+            <section class="content__section categories">
+                <h2 class="section__title">Товары по категориям</h2>
+                <div class="section__cardlist section__cardlist_center cardlist row">
+                    {% for main_category in main_categories %}
+                        {{ include('/inc/category.html', {category: main_category}) }}
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="content__section section">
+                <h2 class="section__title">Популярные товары</h2>
+                <div class="section__cardlist section__cardlist_center cardlist row js-category" data-id="0">
+                    {% for popular_product in popular_products %}
+                    {{ include('/inc/card.html', {product: popular_product}) }}
+                    {% endfor %}
+                </div>
+                {% if popular_products_count > 5 %}
+                    <div class="more">
+                        <a class="more__link js-show-move-products" href="javascript:void(0)"
+                           data-block="1" data-products_count="{{popular_products_count}}" data-category="0">
+                            Загрузить еще
+                        </a>
+                    </div>
+                {% endif %}
+            </section>
+
+            <section class="content__section compensation">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 compensation__content">
+                        <h2 class="compensation__title">{{compens_info.title}}</h2>
+                        <p class="compensation__text">{{compens_info.description}}</p>
+                        <a href="/{{compens_info.full_url}}" class="compensation__link">Подробнее</a>
+                    </div>
+                    <div class="col-lg-6 col-md-12 compensation__image">
+                        <img src="/images/compenstaion.png" alt="">
+                    </div>
+                </div>
+            </section>
+
+            {% for product_block in product_blocks %}
+                {% if product_block.products|length > 0 %}
+                    <section class="content__section section">
+                        <h2 class="section__title">Популярные товары категории "<a title="Перейти к товарам категории {{product_block.title}}"
+                                                                                   class="section__title-link" href="/{{product_block.full_url}}">{{product_block.title}}</a>"</h2>
+                        <div class="section__cardlist section__cardlist_center cardlist row js-category" data-id="{{product_block.id}}">
+                            {% for popular_product in product_block.products %}
+                                {{ include('/inc/card.html', {product: popular_product}) }}
+                            {% endfor %}
+                        </div>
+                        {% if product_block.products_count > 5 %}
+                            <div class="more">
+                                <a class="more__link js-show-move-products" href="javascript:void(0)"
+                                   data-block="1" data-products_count="{{product_block.products_count}}" data-category="{{product_block.id}}">
+                                    Загрузить еще
+                                </a>
+                            </div>
+                        {% endif %}
+                    </section>
+                {% endif %}
+            {% endfor %}
+        </main>
+    </div>
+{% endblock %}

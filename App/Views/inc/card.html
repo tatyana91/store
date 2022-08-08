@@ -1,0 +1,52 @@
+<div class="card col col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 js-cart-item" data-id="{{product.id}}">
+    <div class="card__content">
+            <a href="/{{product.full_url}}" title="Перейти к товару">
+                {% if (product.image != '') %}
+                <img src="/images/gallery/{{product.id}}/{{product.image}}"
+                     alt="{{popular_product.title}}" class="card__image">
+                {% else %}
+                <img src="/images/nophoto.png" alt="" class="card__image">
+                {% endif %}
+
+                <p class="card__price">
+                    {% if (product.price_sale) %}
+                    <span class="card__price_sale">{{product.price}} руб.</span>
+                    <span>{{product.price_sale}} руб.</span>
+                    {% else %}
+                    <span>{{product.price}} руб.</span>
+                    {% endif %}
+                </p>
+
+                <div class="card__name">{{product.title}}</div>
+            </a>
+
+            <div class="card__button-wrap">
+                {% if (product.free_qty == 0) %}
+                    <span class="emptyCartQty">Нет в наличии</span>
+                    <button class="button button_default card__button js-preorder-popup"
+                            data-id="{{product.id}}"
+                            data-href="/{{product.full_url}}"
+                            data-title="{{product.title}}">Под заказ</button>
+                {% else %}
+                    {% if product.in_cart == 0 %}
+                        <div class="card__inputs js-card-inputs" data-id="{{product.id}}"></div>
+                        <button class="button button_default card__button js-card-btn js-add-to-cart"
+                                data-id="{{product.id}}">В корзину</button>
+                    {% else %}
+                        <div class="card__inputs js-card-inputs" data-id="{{product.id}}">
+                            {{ include('/inc/card_change.html', {
+                                card_product_id: product.id,
+                                card_product_count: product.in_cart
+                            })
+                            }}
+                        </div>
+                        <!--<button class="button button_default card__button js-card-btn js-remove-from-cart"
+                                data-id="{{product.id}}">Убрать из корзины</button>-->
+                        <button class="button button_default card__button js-card-btn">
+                            <a href="/cart">Перейти в корзину</a>
+                        </button>
+                    {% endif %}
+                {% endif %}
+            </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Рейтинг</th>
+            <th>Управление</th>
+        </tr>
+        </thead>
+        <tbody class="sortable" data-table="ref_chars">
+            {% for ref_char in ref_chars %}
+                {% set archived = '' %}
+                {% if ref_char.archived == 1 %}
+                {% set archived = 'archived' %}
+                {% endif %}
+                <tr class="{{archived}} js-item" data-id="{{ref_char.id}}">
+                    <td>
+                        <div>{{ref_char.title}}</div>
+                    </td>
+                    <td>{{ref_char.rate}}</td>
+                    <td class='change'>
+                        <div class="control-btn">
+                            <a href='/admin/ref_chars?act=edit&id={{ref_char.id}}' title='Редактировать'>
+                                Редактировать
+                            </a>
+                        </div>
+                        {% if (ref_char.archived == 0) %}
+                            <div class="control-btn">
+                                <a href='/admin/ref_chars?act=add_to_achive&id={{ref_char.id}}' title='Поместить характеристику в архив'
+                                   onclick="return confirm('Вы действительно хотите поместить эту характеристику в архив?')">
+                                    Скрыть
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="control-btn">
+                                <a href='/admin/ref_chars?act=remove_from_achive&id={{ref_char.id}}' title='Восстановить характеристику из архива'
+                                   onclick="return confirm('Вы действительно хотите восстановить эту характеристику из архива?')">
+                                    Восстановить
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        <div class="control-btn">
+                            <a href='/admin/ref_chars?act=delete&id={{ref_char.id}}' title='Удалить'
+                               onclick="return confirm('Вы действительно хотите удалить эту характеристику? Характеристика будет удалена без возможности восстановления')">
+                                Удалить
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

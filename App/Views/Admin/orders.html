@@ -1,0 +1,100 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div class="checkboxes">
+    <span style="margin-right: 5px;">Показывать:</span>
+    {% for ref_status in params.order_statuses %}
+    <label class="filter__value">
+        <input type="checkbox" value="{{ref_status.id}}" name="statuses[]" class="input__checkbox js-change-temp-status"
+               {{ (ref_status.id in statuses) ? 'checked' : '' }}>
+        <span class="input__checkbox-text" style="color: {{ref_status.color}}">{{ref_status.plural_title}}</span>
+    </label>
+    {% endfor %}
+</div>
+
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped table-condensed'>
+        <thead>
+        <tr>
+            <th>№п/п</th>
+            <th>Дата</th>
+            <th>Имя/Телефон/Почта</th>
+            <th>Адрес</th>
+            <th>Сумма заказа</th>
+            <th>Управление</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{order.id}} {{ (order.depot_number) ? ("<span title='№ на складе'>(№" ~ order.depot_number ~ ")</span>")|raw : '' }}</td>
+                    <td>
+                        {{order.date|date("d.m.Y H:i")}}<br>
+                        <span style='color: {{ params.order_statuses[order.status].color }}'>{{params.order_statuses[order.status].title}}</span>
+                    </td>
+                    <td>{{ (order.name) ? order.name : '-'}}<br>{{(order.phone) ? order.phone : '-'}}<br>{{ (order.email) ? order.email : '-' }}</td>
+                    <td>
+                        {% if (order.pvz_title) %}
+                           Самовывоз: {{order.pvz_title}}
+                        {% else %}
+                            Доставка: {{order.address_title}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{order.total_cost}} руб.<br>
+                        {{order.payment_type_title}}<br>
+                        {{(order.promo) ? 'Промокод: ' ~ order.promo : ''}}
+                    </td>
+                    <td class='change'>
+                        <div class="control-btn">
+                            <a href='/admin/orders?act=show&id={{order.id}}' title='Подробнее'>
+                                Подробнее
+                            </a>
+                        </div>
+
+                        {% if (order.status in [1, 3]) %}
+                            <div class="control-btn">
+                                <a class="js-set-order-completed" data-id="{{order.id}}" href="javascript:void(0)"
+                                   title="Добавить отметку о выполнении и списать количество">
+                                    Выполнить
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if (order.status in [1]) %}
+                            <div class="control-btn">
+                                <a class="js-set-order-declined" data-id="{{order.id}}" href="javascript:void(0)"
+                                   title="Отменить резерв товаров">
+                                    Отклонить
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if (order.paymentOrderId and order.status in [2,3]) %}
+                        <div class="control-btn">
+                            <a href='/cart/pay_result?orderId={{order.paymentOrderId}}' title='Проверить статус оплаты заказа и обновить информацию' target="_blank">
+                                Проверить оплату
+                            </a>
+                        </div>
+                        {% endif %}
+
+                        {% if (order.depot_id == '') %}
+                            <div class="control-btn">
+                                <a class="js-create-depot-order" data-order_id="{{order.id}}" href="javascript:void(0)"
+                                   title="Создать заказ на складе">
+                                    Создать на складе
+                                </a>
+                            </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

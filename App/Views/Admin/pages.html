@@ -1,0 +1,87 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div class="table-responsive">
+    <table class='table table-striped table_head'>
+       <thead>
+           <tr>
+               <th>Изображение</th>
+               <th style='width: 100px'>Пункт меню</th>
+               <th style='width: 100px'>Блок</th>
+               <th>Название</th>
+               <th>Название меню</th>
+               <th>Ссылка</th>
+               <th>Рейтинг</th>
+               <th>Управление</th>
+           </tr>
+       </thead>
+        <tbody class="sortable" data-table="pages">
+            {% for page in pages %}
+                {% set archived = '' %}
+                {% if page.archived == 1 %}
+                    {% set archived = 'archived' %}
+                {% endif %}
+                <tr class="{{archived}} js-item" data-id="{{page.id}}">
+                    <td>
+                        {% if page.image %}
+                        <img src="/images/pages/{{page.id}}/{{page.image}}" style="width: 50px">
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if page.show_menu == 1 %}
+                        <img src='/images/admin/mark.png' style='width: 20px;'>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if page.show_index_block == 1 %}
+                        <img src='/images/admin/mark.png' style='width: 20px;'>
+                        {% endif %}
+                    </td>
+                    <td>{{page.full_title}}</td>
+                    <td>{{page.title_menu}}</td>
+                    <td>
+                        <a href="/{{page.full_url}}" target="_blank" title="Открыть на сайте">/{{page.full_url}}</a>
+                    </td>
+                    <td>{{page.rate}}</td>
+                    <td class='change'>
+                        <div class="control-btn">
+                            <a href='/admin/pages?act=edit&id={{page.id}}' title='Редактировать'>
+                                Редактировать
+                            </a>
+                        </div>
+
+
+                        {% if (page.archived == 0) %}
+                        <div class="control-btn">
+                            <a href='/admin/pages?act=add_to_achive&id={{page.id}}' title='Поместить страницу в архив'
+                               onclick="return confirm('Вы действительно хотите поместить эту страницу в архив?')">
+                                Скрыть
+                            </a>
+                        </div>
+                        {% else %}
+                        <div class="control-btn">
+                            <a href='/admin/pages?act=remove_from_achive&id={{page.id}}' title='Восстановить страницу из архива'
+                               onclick="return confirm('Вы действительно хотите восстановить эту страницу из архива?')">
+                                Восстановить
+                            </a>
+                        </div>
+                        {% endif %}
+
+                        <div class="control-btn">
+                            <a href='/admin/pages?act=delete&id={{page.id}}' title='Удалить'
+                               onclick="return confirm('Вы действительно хотите удалить эту страницу? Страница будет удалена без возможности восстановления')">
+                                Удалить
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

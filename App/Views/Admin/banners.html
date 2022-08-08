@@ -1,0 +1,76 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>Баннер</th>
+            <th>Баннер мобильной версии</th>
+            <th>Текст 1</th>
+            <th>Текст 2</th>
+            <th>Альт</th>
+            <th>Рейтинг</th>
+            <th>Управление</th>
+        </tr>
+        </thead>
+        <tbody class="sortable" data-table="banners">
+            {% for banner in banners %}
+                {% set archived = '' %}
+                {% if banner.archived == 1 %}
+                    {% set archived = 'archived' %}
+                {% endif %}
+                <tr class="{{archived}} js-item" data-id="{{banner.id}}">
+                    <td>
+                        {% if (banner.path) %}
+                            <img src='/images/banners/{{banner.path}}' style='max-width: 200px'/>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if (banner.path2) %}
+                            <img src='/images/banners/{{banner.path2}}' style='max-width: 200px'/>
+                        {% endif %}
+                    </td>
+                    <td>{{banner.text1}}</td>
+                    <td>{{banner.text2}}</td>
+                    <td>{{banner.alt}}</td>
+                    <td>{{banner.rate}}</td>
+                    <td class='change'>
+                        <div class="control-btn">
+                            <a href='/admin/banners?act=edit&id={{banner.id}}' title='Редактировать'>
+                                Редактировать
+                            </a>
+                        </div>
+                        {% if (banner.archived == 0) %}
+                        <div class="control-btn">
+                            <a href='/admin/banners?act=add_to_achive&id={{banner.id}}' title='Поместить баннер в архив'
+                               onclick="return confirm('Вы действительно хотите поместить этот баннер в архив?')">
+                                Скрыть
+                            </a>
+                        </div>
+                        {% else %}
+                        <div class="control-btn">
+                            <a href='/admin/banners?act=remove_from_achive&id={{banner.id}}' title='Восстановить баннер из архива'
+                               onclick="return confirm('Вы действительно хотите восстановить этот баннер из архива?')">
+                                Восстановить
+                            </a>
+                        </div>
+                        {% endif %}
+                        <div class="control-btn">
+                            <a href='/admin/banners?act=delete&id={{banner.id}}' title='Удалить'
+                               onclick="return confirm('Вы действительно хотите удалить этот баннер? Баннер будет удален без возможности восстановления')">
+                                Удалить
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

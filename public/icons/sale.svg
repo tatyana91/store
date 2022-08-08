@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 70.87 70.87" style="enable-background:new 0 0 70.87 70.87;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#4985BC;}
+	.st1{fill:none;stroke:#4985BC;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st2{fill:#FFFFFF;stroke:#4985BC;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st3{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+</style>
+<g>
+	<path class="st1" d="M57.2,59.26H15.06c-3,0-5.44-2.43-5.44-5.44V26.35c0-3,2.43-5.44,5.44-5.44H57.2c3,0,5.44,2.43,5.44,5.44
+		v27.47C62.63,56.82,60.2,59.26,57.2,59.26z"/>
+	<path class="st3" d="M56.73,61.26H13.37c-2.07,0-3.75-1.68-3.75-3.75V26.66c0-2.07,1.68-3.75,3.75-3.75h43.36
+		c2.07,0,3.75,1.68,3.75,3.75v30.85C60.47,59.58,58.79,61.26,56.73,61.26z"/>
+	<path class="st2" d="M56.78,62.32H11.96c-1.47,0-2.67-1.2-2.67-2.67v-33c0-1.47,1.2-2.67,2.67-2.67h44.82
+		c1.47,0,2.67,1.2,2.67,2.67v33C59.45,61.12,58.26,62.32,56.78,62.32z"/>
+	<path class="st2" d="M62.77,49.83h-10.4c-3.31,0-6-2.69-6-6V42.8c0-3.31,2.69-6,6-6h10.4c0.44,0,0.8,0.36,0.8,0.8v11.43
+		C63.58,49.47,63.22,49.83,62.77,49.83z"/>
+	<path class="st2" d="M31.7,23.98l7.34-14.79c0.28-0.57,0.97-0.8,1.54-0.52l15.52,7.7c0.57,0.28,0.8,0.97,0.52,1.54l-3.01,6.07H31.7
+		z"/>
+	<path class="st2" d="M38.31,10.42l-7.15-1.84c-0.62-0.15-1.24,0.23-1.38,0.85l-3.32,14.02l5.93,0.11L38.31,10.42z"/>
+	<path class="st2" d="M26.45,21.76l2.03-10.22l-5.25-0.67c-0.63-0.08-1.2,0.34-1.28,0.94l-1.47,11.52l6-0.03L26.45,21.76z"/>
+	<circle class="st0" cx="52.96" cy="43.08" r="2.01"/>
+</g>
+</svg>

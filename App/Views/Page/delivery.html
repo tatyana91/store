@@ -1,0 +1,28 @@
+{% extends "/base.html" %}
+
+{% set page_title = page.title %}
+{% set page_breadcrumbs = page.breadcrumbs %}
+{% set page_banners = page.banners %}
+
+{% block page_content %}
+    <h1 class="h1">{{page.title}}</h1>
+    <div class="tinymce-content">
+        {{page.text|raw}}
+        {% if (params.pvz|length > 0) %}
+            <h2>Пункты выдачи заказов:</h2>
+            <div class="pvz">
+                {% for pvz_point in params.pvz %}
+                    <div class="pvz__item pvzItem">
+                        <div class="pvzItem__title">{{pvz_point.title}}</div>
+                        <div class="pvzItem__worktime">{{pvz_point.worktime}}</div>
+                        <div class="pvzItem__phone">{{pvz_point.phone}}</div>
+                        <div class="pvzItem__text">{{pvz_point.text}}</div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="map">
+                {{ include('/inc/pvz_map.html') }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

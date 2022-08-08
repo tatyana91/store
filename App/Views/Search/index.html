@@ -1,0 +1,39 @@
+{% extends "/base.html" %}
+
+{% set page_title = page.title %}
+{% set page_breadcrumbs = page.breadcrumbs %}
+{% set page_banners = page.banners %}
+
+{% block page_content %}
+    <div class="page__title">
+        <h1 class="h1">{{page.title}}</h1>
+    </div>
+    <div class="catalogue">
+        {% if (results|length) > 0 %}
+            <p>Результаты поиска по запросу "{{query}}":</p>
+
+            {% if (results.pages|length) > 0 %}
+                <h3 style="display:block;margin-bottom: 10px;">Страницы ({{results.pages|length}}шт.):</h3>
+                {% for item in results.pages %}
+                <div>
+                    <a href="{{item.url}}" class="search-page-link" target="_blank">{{item.title}}</a>
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if (results.products|length) > 0 %}
+                <h3 style="display:block; margin-top: 20px; margin-bottom: 10px;">Товары ({{results.products|length}}шт.):</h3>
+                <div class="row">
+                    {% for item in results.products %}
+                        {{ include('/inc/card.html', {
+                            product: item
+                        })
+                        }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% else %}
+            <p>По запросу "{{query}}" ничего не найдено</p>
+        {% endif %}
+    </div>
+{% endblock %}

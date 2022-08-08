@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    {% block title %}
+        <title>{{page.seo.title}}</title>
+        <meta name="Keywords" content="{{page.seo.keywords}}">
+        <meta name="Description" content="{{page.seo.description}}">
+    {% endblock %}
+
+    <link rel="stylesheet" href="/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="/css/slick.css">
+    <link rel="stylesheet" href="/css/slick-theme.css?{{date().timestamp}}">
+
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/main.css?{{date().timestamp}}">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <link rel="shortcut icon" href="/images/favicons/favicon-32x32.png" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="canonical" href="{{params.request_url}}"/>
+
+
+</head>
+    <body>
+        <header id="lotus-header">
+            <div class="header_fixed">
+                <div class="header__top-bar" >
+                    <div class="container">
+                        <div class="header__top-nav">
+                            <div class="header__contact">
+                                <span class="header__location">{{settings.city}}</span>
+                                <a class="header__phone nowrap js-settings-phone" href="tel:{{settings.phone|replace({' ': ''})}}">{{settings.phone}}</a>
+                            </div>
+                            <div class="header__top-links">
+                                {% for header_page in header_pages %}
+                                <a class="header__top-link" href="/{{header_page.url}}">
+                                    {{header_page.title_menu}}
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="header__main header__main-wrapper">
+                        <a class="header__logo logo" href="/">
+                            <svg class="logo__image" width="73" height="63" viewBox="0 0 73 63" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M36.5464 52.1378C37.6004 52.1378 49.1448 40.4663 49.1448 26.0689C49.1448 11.6714 37.6004 0 36.5464 0C35.4924 0 23.948 11.6714 23.948 26.0689C23.948 40.4663 35.4924 52.1378 36.5464 52.1378Z" fill="white" />
+                                <path d="M59.2908 12.6488C56.8445 13.3385 54.2403 14.3096 51.6813 15.661C50.9677 13.4056 50.0778 11.3019 49.112 9.3867C52.358 6.77435 55.0359 5.42852 55.4604 5.54574C55.9013 5.66799 57.6914 8.42884 59.2908 12.6488Z" fill="white" />
+                                <path d="M17.2203 5.546C17.655 5.42508 20.4847 6.85682 23.8619 9.62563C22.9371 11.4883 22.0841 13.5249 21.3992 15.7024C18.713 14.2754 15.9756 13.2685 13.4186 12.5676C15.0098 8.39357 16.7815 5.66746 17.2203 5.546Z" fill="white" />
+                                <path
+                                        d="M0.31038 14.6476C0.906403 14.0309 11.3487 13.7841 20.5403 18.9174C20.0417 21.1907 19.7481 23.5852 19.7481 26.0689C19.7481 34.4334 23.0788 41.7874 26.3496 46.9003C27.5178 48.7265 28.7111 50.3187 29.8065 51.6272C23.948 51.0516 15.3871 48.6795 9.21879 42.2978C-0.621163 32.1172 -0.43489 15.4186 0.31038 14.6476Z"
+                                        fill="white" />
+                                <path
+                                        d="M53.3438 26.0689C53.3438 23.5687 53.0462 21.1588 52.5416 18.872C61.7132 13.7857 72.0954 14.0328 72.6896 14.6477C73.4349 15.4187 73.6212 32.1173 63.7812 42.2979C57.6489 48.6424 49.1448 51.0516 43.2948 51.6159C44.3876 50.3096 45.5774 48.7213 46.7423 46.9003C50.0131 41.7874 53.3438 34.4334 53.3438 26.0689Z"
+                                        fill="white" />
+                                <path
+                                        d="M36.5613 56.551C16.3031 56.551 8.93446 48.1353 6.82097 44.8283C6.58819 44.4641 6.00751 44.5892 6.00605 45.0258C5.99879 47.1987 6.48015 51.2799 9.77549 54.3104C15.0906 59.1983 24.9985 63 36.5613 63C48.1241 63 58.032 59.198 63.3472 54.3101C66.6425 51.2796 67.1239 47.1984 67.1166 45.0255C67.1152 44.5889 66.5345 44.4638 66.3017 44.828C64.1882 48.135 56.8196 56.551 36.5613 56.551Z"
+                                        fill="white" />
+                            </svg>
+
+                            <span class="logo__name">Лотос</span>
+                            <span class="logo__subname">Маркет</span>
+                            <span class="logo__description">{{settings.logo_title}}</span>
+                        </a>
+                        <div class="header__main-links">
+                            <form class="main-search header__main-link" action="/poisk" method="get">
+                                <input class="main-search__input" name="q" type="text" value="{{query}}">
+                                <input type="submit" class="button main-search__button" value="Поиск">
+                            </form>
+                            <a href="/cart" class="header__main-link">
+                                Корзина
+                                <span class="js-cart-count header__cart">{{ params.cart_count > 0 ? params.cart_count : '0' }}</span>
+                            </a>
+                            {% if (params.auth) %}
+                            <a href="/lk" class="header__main-link">Личный кабинет</a>
+                            {% endif %}
+                            {% if (params.auth) %}
+                            <a href="/lk/logout" class="header__main-link">Выход</a>
+                            {% else %}
+                            <a href="javascript:void(0)" class="header__main-link js-auth-popup">Вход</a>
+                            {% endif %}
+                        </div>
+                        <a class="mobile-phone" href="tel:{{settings.phone|replace({' ': ''})}}"></a>
+                        <div class="mobile-basket">
+                            <a href="/cart">
+                                <div class="js-cart-count mobile-basket__count">{{ params.cart_count > 0 ? params.cart_count : '0' }}</div>
+                            </a>
+                        </div>
+                        <div class="menu-mobile-toggle">
+
+                        </div>
+                        <div class="mobile-menu">
+                            <div class="mobile-menu__close"></div>
+
+                            <div class="mobile-menu__block">
+                                <a href="/katalog" class="mobile-menu__link">
+                                    Каталог товаров
+                                </a>
+
+                                <a href="/cart" class="mobile-menu__link mobile-menu__cart">
+                                    Корзина
+                                    <span class="js-cart-count header__cart">{{ params.cart_count > 0 ? params.cart_count : '0' }}</span>
+                                </a>
+
+                                {% if (params.auth) %}
+                                <a href="/lk" class="mobile-menu__link">Личный кабинет</a>
+                                {% endif %}
+
+                                {% if (params.auth) %}
+                                <a href="/lk/logout" class="mobile-menu__link">Выход</a>
+                                {% else %}
+                                <a href="javascript:void(0)" class="mobile-menu__link js-auth-popup">Вход</a>
+                                {% endif %}
+                            </div>
+                            <div class="mobile-menu__block">
+                                {% for catalog_menu_item in catalog_menu %}
+                                    <div class="menuItem js-menu-item">
+                                        {% if (catalog_menu_item.categories.menu) %}
+                                            <div class="mobile-menu__link menuItem__btn js-menu-btn
+                                                {{ (catalog_menu_item.categories.menu) ? 'arrow' : '' }}">{{catalog_menu_item.title}}</div>
+                                            <div class="menuItem__menu js-menu">
+                                                {% for menu_item in catalog_menu_item.categories.menu %}
+                                                <a class="mobile-menu__link menuItem__link {{ (menu_item.categories.menu) ? 'arrow' : '' }}"
+                                                   href="/{{menu_item.url}}">{{menu_item.title}}</a>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <a class="mobile-menu__link"
+                                               href="/{{catalog_menu_item.url}}">{{catalog_menu_item.title}}</a>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="mobile-menu__block">
+                                <div class="mobile-menu__link">Искать на сайте:</div>
+                                <form class="main-search header__main-link" action="/poisk" method="get">
+                                    <input class="main-search__input" name="q" type="text" value="{{query}}" autocomplete="off">
+                                    <input type="submit" class="button main-search__button" value="Поиск">
+                                </form>
+                            </div>
+                            <div class="mobile-menu__block">
+                                {% for header_page in header_pages %}
+                                <a class="mobile-menu__link" href="/{{header_page.url}}">
+                                    {{header_page.title_menu}}
+                                </a>
+                                {% endfor %}
+                            </div>
+                            <div class="mobile-menu__block">
+                                <div class="header__contact">
+                                    <span class="header__location">{{settings.city}}</span>
+                                    <a class="header__phone nowrap" href="tel:{{settings.phone|replace({' ': ''})}}">{{settings.phone}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header__bottom">
+                <div class="container">
+                    <div class="product-menu">
+                        <a class="product-menu__link product-menu__link_main" id="full-menu-btn">
+                            <i class="icon icon_burger">
+                                <img src="/images/burger-white.svg" alt="">
+                            </i>
+                            Каталог товаров
+                        </a>
+
+                        <div class="product-menu__container full-menu" id="full-menu">
+                            {% for catalog_menu_item in catalog_menu %}
+                                <div class="full-menu__column">
+                                    <a class="full-menu__category full-menu__link" href="/{{catalog_menu_item.url}}">{{catalog_menu_item.title}}</a>
+                                    {% for catalog_menu_subitem in catalog_menu_item.categories.menu %}
+                                        <a class="full-menu__link" href="/{{catalog_menu_subitem.url}}">{{catalog_menu_subitem.title}}</a>
+                                        {% for catalog_menu_subitem2 in catalog_menu_subitem.categories.menu %}
+                                            <a class="full-menu__link" style="margin-left: 15px;" href="/{{catalog_menu_subitem2.url}}">{{catalog_menu_subitem2.title}}</a>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="product-menu__additional">
+                            {% for catalog_menu_page in catalog_menu_pages %}
+                            <a class="product-menu__link" href="/{{catalog_menu_page.full_url}}">
+                                {% if (catalog_menu_page.title_menu == 'Средства для ухода за кожей') %}
+                                    {{'Уход за кожей'}}
+                                {% else %}
+                                    {{catalog_menu_page.title_menu}}
+                                {% endif %}
+                            </a>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        {% block content %}
+            <div class="container">
+                <main class="content content_inner">
+                    {% embed "/inc/page_banners.html" %}
+                    {% endembed %}
+
+                    {% embed "/inc/breadcrumbs.html" %}
+                    {% endembed %}
+
+                    {% block page_content %}
+                    {% endblock %}
+                </main>
+            </div>
+        {% endblock %}
+
+        {{ include('/inc/brands_list.html', {
+        brands: params.brands,
+        show_title: true
+        })
+        }}
+
+        <div style="background: #fdfdfd; padding-top: 24px;">
+            <div class="container">
+                <section class="content__section categories">
+                    <h2 class="section__title">Наши преимущества</h2>
+                    <div class="section__cardlist section__cardlist_center cardlist row">
+                        <a href="/dostavka" class="advantage col-12 col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                            <img src="/icons/delivery.svg" alt="Быстрая доставка" class="advantage__image">
+                            <h3 class="advantage__title">Быстрая доставка</h3>
+                            <p class="advantage__text">В удобное для вас время,<br>бесплатно от 2000 рублей</p>
+                        </a>
+                        <a href="/katalog" class="advantage col-12 col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                            <img src="/icons/cart.svg" alt="Широкий ассортимент" class="advantage__image">
+                            <h3 class="advantage__title">Широкий ассортимент</h3>
+                            <p class="advantage__text">Мы можем удовлетворить<br>Вашу потребность в любой<br>продукции!</p>
+                        </a>
+                        <a href="/kontakty" class="advantage col-12 col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                            <img src="/icons/sale.svg" alt="Низкие цены" class="advantage__image">
+                            <h3 class="advantage__title">Низкие цены</h3>
+                            <p class="advantage__text">Мы поддерживаем низкие<br>цены на весь ассортимент</p>
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <footer id="lotus-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 order-last order-md-first">
+                        <div class="footer__logo">
+                        <a class="logo" href="/">
+                            <svg class="logo__image" width="73" height="63" viewBox="0 0 73 63" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M36.5464 52.1378C37.6004 52.1378 49.1448 40.4663 49.1448 26.0689C49.1448 11.6714 37.6004 0 36.5464 0C35.4924 0 23.948 11.6714 23.948 26.0689C23.948 40.4663 35.4924 52.1378 36.5464 52.1378Z" fill="white" />
+                                <path d="M59.2908 12.6488C56.8445 13.3385 54.2403 14.3096 51.6813 15.661C50.9677 13.4056 50.0778 11.3019 49.112 9.3867C52.358 6.77435 55.0359 5.42852 55.4604 5.54574C55.9013 5.66799 57.6914 8.42884 59.2908 12.6488Z" fill="white" />
+                                <path d="M17.2203 5.546C17.655 5.42508 20.4847 6.85682 23.8619 9.62563C22.9371 11.4883 22.0841 13.5249 21.3992 15.7024C18.713 14.2754 15.9756 13.2685 13.4186 12.5676C15.0098 8.39357 16.7815 5.66746 17.2203 5.546Z" fill="white" />
+                                <path
+                                        d="M0.31038 14.6476C0.906403 14.0309 11.3487 13.7841 20.5403 18.9174C20.0417 21.1907 19.7481 23.5852 19.7481 26.0689C19.7481 34.4334 23.0788 41.7874 26.3496 46.9003C27.5178 48.7265 28.7111 50.3187 29.8065 51.6272C23.948 51.0516 15.3871 48.6795 9.21879 42.2978C-0.621163 32.1172 -0.43489 15.4186 0.31038 14.6476Z"
+                                        fill="white" />
+                                <path
+                                        d="M53.3438 26.0689C53.3438 23.5687 53.0462 21.1588 52.5416 18.872C61.7132 13.7857 72.0954 14.0328 72.6896 14.6477C73.4349 15.4187 73.6212 32.1173 63.7812 42.2979C57.6489 48.6424 49.1448 51.0516 43.2948 51.6159C44.3876 50.3096 45.5774 48.7213 46.7423 46.9003C50.0131 41.7874 53.3438 34.4334 53.3438 26.0689Z"
+                                        fill="white" />
+                                <path
+                                        d="M36.5613 56.551C16.3031 56.551 8.93446 48.1353 6.82097 44.8283C6.58819 44.4641 6.00751 44.5892 6.00605 45.0258C5.99879 47.1987 6.48015 51.2799 9.77549 54.3104C15.0906 59.1983 24.9985 63 36.5613 63C48.1241 63 58.032 59.198 63.3472 54.3101C66.6425 51.2796 67.1239 47.1984 67.1166 45.0255C67.1152 44.5889 66.5345 44.4638 66.3017 44.828C64.1882 48.135 56.8196 56.551 36.5613 56.551Z"
+                                        fill="white" />
+                            </svg>
+                            <span class="logo__name">Лотос</span>
+                            <span class="logo__subname">Маркет</span>
+                            <span class="logo__description">{{settings.logo_title}}</span>
+                        </a>
+                        <div class="footer__description">
+                            {{settings.logo_title2}}
+                        </div>
+                        <div class="footer__copy">
+                            &copy;&nbsp;{{settings.copyright}}
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 order-first">
+                        <div class="footer__menu row">
+                            <div class="footer__menu-block col-md-4">
+                                <div class="footer__menu-title">О компании</div>
+                                <ul class="footer__menu-list">
+                                    <li class="footer__menu-item"><a href="/o_nas" class="footer__link">О нас</a></li>
+                                    <li class="footer__menu-item"><a href="/katalog" class="footer__link">Каталог</a></li>
+                                    <li class="footer__menu-item"><a href="/kontakty" class="footer__link">Контакты</a></li>
+
+                                </ul>
+                            </div>
+                            <div class="footer__menu-block col-md-4">
+                                <div class="footer__menu-title">Посетителям</div>
+                                <ul class="footer__menu-list">
+                                    <!--<li class="footer__menu-item"><a href="/obratnaya_svyaz" class="footer__link">Обратная связь</a></li>-->
+                                    {% if (params.auth) %}
+                                        <li class="footer__menu-item"><a href="/lk" class="footer__link">Личный кабинет</a></li>
+                                    {% else %}
+                                        <li class="footer__menu-item"><a href="javascript:void(0)" class="footer__link js-auth-popup">Личный кабинет</a></li>
+                                    {% endif %}
+                                    <li class="footer__menu-item"><a href="/korporativnym_klientam" class="footer__link">Корпоративным клиентам</a></li>
+                                </ul>
+                            </div>
+                            <div class="footer__menu-block col-md-4">
+                                <div class="footer__menu-title">Как купить</div>
+                                <ul class="footer__menu-list">
+                                    {% for header_page in header_pages %}
+                                        {% if (header_page.id != 59) %}
+                                            <li class="footer__menu-item">
+                                                <a href="/{{header_page.url}}" class="footer__link">{{header_page.title_menu}}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="footer__additional">
+                            <div class="footer__menu-title">Мы в соцсетях</div>
+                            <ul class="footer__social">
+                                <li class="footer__social-item">
+                                    <a href="{{settings.soc_vk}}" target="_blank">
+                                        <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                    d="M17.5 0C7.83534 0 0 7.83499 0 17.5C0 27.165 7.83534 35 17.5 35C27.1647 35 35 27.165 35 17.5C35 7.83499 27.1647 0 17.5 0ZM26.3769 20.3927C27.1926 21.1894 28.0555 21.9391 28.7877 22.8182C29.1121 23.207 29.4179 23.6091 29.6506 24.0613C29.9829 24.7062 29.6829 25.4134 29.1057 25.4517L25.5205 25.4509C24.5945 25.5276 23.8576 25.1541 23.2364 24.5211C22.7405 24.0166 22.2804 23.4777 21.8028 22.956C21.6076 22.7419 21.4021 22.5403 21.1572 22.3817C20.6684 22.0637 20.2438 22.1611 19.9638 22.6717C19.6784 23.1913 19.6132 23.767 19.586 24.3453C19.547 25.1906 19.2921 25.4116 18.4438 25.4513C16.6314 25.5362 14.9116 25.2612 13.3132 24.3474C11.9032 23.5414 10.8119 22.4039 9.86087 21.116C8.009 18.6053 6.59074 15.8497 5.31642 13.0149C5.02962 12.3765 5.23944 12.0349 5.94373 12.0217C7.11386 11.9991 8.28399 12.002 9.45412 12.0206C9.93033 12.0281 10.2454 12.3006 10.4284 12.75C11.0607 14.3057 11.8359 15.7859 12.8073 17.1587C13.0662 17.5243 13.3304 17.8888 13.7068 18.147C14.1221 18.432 14.4386 18.3378 14.6345 17.8741C14.7598 17.5794 14.8139 17.2643 14.8411 16.9485C14.9342 15.8669 14.9453 14.7855 14.7841 13.7081C14.6839 13.0339 14.3047 12.5985 13.6326 12.471C13.2903 12.4062 13.3405 12.2795 13.507 12.084C13.7959 11.746 14.0666 11.5369 14.6076 11.5369L18.6583 11.5362C19.2967 11.6615 19.44 11.9479 19.5266 12.591L19.5302 17.0925C19.5227 17.3413 19.6551 18.0789 20.102 18.2418C20.4601 18.36 20.6964 18.0728 20.9105 17.8462C21.8819 16.8153 22.574 15.5987 23.1938 14.3394C23.4674 13.784 23.7033 13.2094 23.9325 12.6336C24.1029 12.2079 24.3679 11.9984 24.8484 12.0056L28.7491 12.0102C28.864 12.0102 28.9807 12.0113 29.0946 12.031C29.752 12.1434 29.9321 12.4263 29.7287 13.0676C29.4086 14.0751 28.7867 14.9144 28.1787 15.7559C27.527 16.6567 26.832 17.5261 26.1868 18.4309C25.5939 19.258 25.6408 19.6744 26.3769 20.3927Z"
+                                                    fill="white" />
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="footer__social-item">
+                                    <a href="{{settings.soc_ins}}" target="_blank">
+                                        <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                                d="M17.4993 21.0034C19.43 21.0034 21.0041 19.4321 21.0041 17.5C21.0041 16.7373 20.7546 16.0331 20.3415 15.4579C19.7049 14.5753 18.6701 13.9966 17.5014 13.9966C16.332 13.9966 15.2979 14.5746 14.6599 15.4572C14.2454 16.0324 13.998 16.7366 13.9973 17.4993C13.9952 19.4314 15.5679 21.0034 17.4993 21.0034Z"
+                                                fill="white" />
+                                        <path d="M25.1496 13.2142V9.84049L21.7753 9.85106L21.7865 13.2254L25.1496 13.2142Z" fill="white" />
+                                        <path
+                                                d="M17.5 0C7.85054 0 0 7.85054 0 17.5C0 27.1488 7.85054 35 17.5 35C27.1488 35 35 27.1488 35 17.5C35 7.85054 27.1502 0 17.5 0ZM27.4526 23.6066C27.4526 25.7291 25.727 27.454 23.6059 27.454H11.3941C9.27234 27.454 7.54743 25.7291 7.54743 23.6066V11.3948C7.54743 9.27304 9.27234 7.54814 11.3941 7.54814H23.6052C25.727 7.54814 27.4526 9.27304 27.4526 11.3948V23.6066Z"
+                                                fill="white" />
+                                        <path
+                                                d="M22.944 17.5C22.944 20.5008 20.5022 22.944 17.5 22.944C14.4978 22.944 12.0567 20.5008 12.0567 17.5C12.0567 16.7782 12.2005 16.0881 12.4571 15.4579H9.48592V23.6066C9.48592 24.6597 10.341 25.5127 11.3934 25.5127H23.6045C24.6555 25.5127 25.512 24.6597 25.512 23.6066V15.4579H22.5394C22.7981 16.0881 22.944 16.7782 22.944 17.5Z"
+                                                fill="white" />
+                                    </svg>
+                                    </a>
+                                </li>
+                            </ul>
+                            <a href="/politika_konfidencialnosti" class="footer__link">Политика конфиденциальности</a>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row footer__pay">
+                    <div class="footer__pay-item">
+                        <a href="https://mironline.ru/" target="_blank">
+                            <img src="/images/mir.svg" alt="">
+                        </a>
+                    </div>
+                    <div class="footer__pay-item">
+                        <a href="https://www.visa.com.ru/" target="_blank">
+                            <img src="/images/visa.svg" alt="">
+                        </a>
+                    </div>
+                    <div class="footer__pay-item">
+                        <a href="https://www.mastercard.ru/ru-ru.html" target="_blank">
+                            <img src="/images/mastercard.svg" alt="">
+                        </a>
+                    </div>
+                    <div class="footer__pay-item">
+                        <a href="http://www.ru.jcb/ru/" target="_blank">
+                            <img src="/images/jsb.svg" alt="">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="auth js-auth-bg">
+                  <div class="auth__content">
+                    <div class="auth__close js-auth-close"></div>
+                    <h3 class="input-block__title">Вход</h3>
+                    <label class="input-block__item input input_width_available">
+                      <span class="input__label">Адрес эл.почты</span>
+                      <input class="input__control js-login-email" type="text" value="">
+                    </label>
+                    <label class="input-block__item input input_width_available">
+                      <span class="input__label">Пароль</span>
+                      <input class="input__control js-login-password" type="password" value="">
+                    </label>
+                    <div class="login-error js-login-error"></div>
+                    <a href="javascript:void(0)" class="reset__auth-link button_link">Забыли пароль?</a>
+                    <div class="auth__btns">
+                        <button class="button button_default js-login">Войти</button>
+                        <a href="javascript:void(0)" class="auth__reg-link button_link">Зарегистрироваться</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="reset js-auth-reset">
+                    <div class="reset__content">
+                        <div class="reset__close js-reset-close"></div>
+                        <h3 class="input-block__title">Восстановление доступа</h3>
+                        <label class="input-block__item input input_width_available">
+                            <span class="input__label">Адрес эл.почты</span>
+                            <input class="input__control js-reset-email" type="text" value="">
+                        </label>
+                        <div class="reset-error js-reset-error"></div>
+                        <div class="reset-success js-reset-success"></div>
+                        <div class="reset__btns">
+                            <button class="button button_default js-reset">Восстановить</button>
+                        </div>
+                        <div class="reset__btns">
+                            <a href="javascript:void(0)" class="reg__auth-link button_link" style="margin-left: 0">Войти</a>
+                            <a href="javascript:void(0)" class="auth__reg-link button_link">Зарегистрироваться</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reg js-reg-bg">
+                  <div class="reg__content">
+                    <div class="reg__close js-reg-close"></div>
+                    <h3 class="input-block__title">Регистрация</h3>
+                    <div class="js-reg-form">
+                        <label class="input-block__item input input_width_available">
+                            <span class="input__label">Адрес эл.почты</span>
+                            <input class="input__control js-reg-email" type="email" value="">
+                        </label>
+                        <label class="input-block__item input input_width_available">
+                            <span class="input__label">Номер телефона</span>
+                            <input class="input__control js-reg-phone" type="text" value="">
+                        </label>
+                        <label class="input-block__item input input_width_available">
+                            <span class="input__label">Пароль</span>
+                            <input class="input__control js-reg-password" type="password" value="">
+                        </label>
+                        <label class="input-block__item input input_width_available">
+                            <span class="input__label">Подтвердите пароль</span>
+                            <input class="input__control js-reg-password2" type="password" value="">
+                        </label>
+                        <label class="input-block__item input input_width_available agree-block">
+                            <input class="input__control input__checkbox js-agree" type="checkbox" checked>
+                            <span class="input__label">Согласие на обработку <a href="/politika_konfidencialnosti" target="_blank">персональных данных</a></span>
+                        </label>
+                        <label class="input-block__item input input_width_available">
+                            <input class="input__control input__checkbox js-subscribe" type="checkbox">
+                            <span class="input__label">Подписаться на новости и акции</span>
+                        </label>
+                        <div class="req-error js-req-error"></div>
+                        <div class="reg__btns">
+                            <button class="button button_default js-req">Зарегистрироваться</button>
+                            <a href="javascript:void(0)" class="reg__auth-link button_link">Войти</a>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="priceForm js-priceform-bg">
+                    <div class="priceForm__content">
+                        <div class="priceForm__close js-priceform-close"></div>
+                        <h3 class="input-block__title">Получить прайс-лист со специальными ценами:</h3>
+                        <label class="input-block__item input input_width_available">
+                            <span class="input__label">Адрес эл.почты <span class="required-asterisk">*</span></span>
+                            <input class="input__control js-priceform-email" type="text" value="">
+                        </label>
+                        <label class="input-block__item input input_width_available">
+                            <span class="input__label">Телефон</span>
+                            <input class="input__control js-priceform-phone" type="text" value="">
+                        </label>
+                        <div class="priceForm-error js-priceform-error"></div>
+                        <div class="priceForm-success js-priceform-success"></div>
+                        <div class="priceForm__btns">
+                            <button class="button button_default js-request-price">Получить прайс</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="preorder js-preorder-bg">
+                    <div class="preorder__content">
+                        <div class="preorder__close js-preorder-close"></div>
+                        <h3 class="input-block__title">Оставить заявку на позицию</h3>
+                        <div>
+                            <a href="/" class="preorder__link js-preorder-product" data-id=""></a>
+                        </div>
+                        <label class="input-block__item input input_width_available">
+                            <span class="input__label">Имя</span>
+                            <input class="input__control js-preorder-name" type="text" value="">
+                        </label>
+                        <label class="input-block__item input input_width_available">
+                            <span class="input__label">Телефон <span class="required-asterisk">*</span></span>
+                            <input class="input__control js-preorder-phone" type="text" value="">
+                        </label>
+                        <div class="preorder-error js-preorder-error"></div>
+                        <div class="preorder-success js-preorder-success"></div>
+                        <div class="preorder__btns">
+                            <button class="button button_default js-send-preorder">Отправить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <div class="btn-up js-btn-up">Наверх</div>
+
+        {% if (params.show_policy) %}
+            <div class="policy-info js-policy-info">
+                <div class="policy-info__text">Мы&nbsp;используем файлы cookie.
+                    Продолжив работу с&nbsp;сайтом, вы&nbsp;соглашаетесь с
+                    <a href="/politika_konfidencialnosti" target="_blank">Политикой конфиденциальности</a>.
+                </div>
+                <span class="policy-info__close js-close-policy"></span>
+            </div>
+        {% endif %}
+
+        <script src='/js/jquery-3.2.1.min.js'></script>
+        <script src="/js/jquery-ui.min.js"></script>
+        <script src="/js/datepicker-ru.js"></script>
+        <script src='/js/slick.min.js'></script>
+        <script src='//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.min.js'></script>
+        <script src='/js/scripts.js?{{date().timestamp}}'></script>
+    </body>
+</html>

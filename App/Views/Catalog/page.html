@@ -1,0 +1,128 @@
+{% extends "/base.html" %}
+
+{% set page_title = page.title %}
+{% set page_breadcrumbs = page.breadcrumbs %}
+{% set page_banners = page.banners %}
+
+{% block page_content %}
+    <div class="page__title">
+      <h1 class="h1">{{page.title}}</h1>
+    </div>
+    <div class="catalogue row">
+        {% if show_filters == 'true' %}
+            <div class="catalogue__filters filters">
+                {%  if page.categories|length > 0 %}
+                <div class="catalogue__filter">
+                    <h3 class="filters__title catalogue__subtitle">Подкатегории</h3>
+                    {% for category in page.categories %}
+                    <a href="/{{category.full_url}}" class="category-inner2" title="Перейти к товарам категории {{category.title}}">{{category.title}}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="btn-show-filters js-show-filters">
+                    <div>Подобрать параметры</div>
+                </div>
+                <div class="filter__wrap js-filters">
+                    <div class="filters__head">
+                        <h3 class="filters__title catalogue__subtitle">Подбор параметров</h3>
+                        <span class="filters__clear js-clear-filters">Очистить</span>
+                    </div>
+
+                    {% for char_id,char_info in page.chars %}
+                    <div class="catalogue__filter filter js-subfilters">
+                        <p class="filter__title js-subfilter-btn">{{char_info.char_title}}</p>
+                        <div class="filter__body js-subfilter">
+                            {% for char_value_id,char_value_info in char_info.values %}
+                            <label class="filter__value filter__value_width_available">
+                                <input class="input__checkbox js-filter-value" type="checkbox"
+                                       data-char_id="{{char_id}}" data-char_value_id="{{char_value_id}}"
+                                       {{ (char_value_info.checked == true) ? 'checked' : '' }}
+                                > <span class="input__checkbox-text">{{char_value_info.title}}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <div class="catalogue__filter filter js-subfilters">
+                        <p class="filter__title js-subfilter-btn">Цена</p>
+                        <div class="filter__body js-subfilter">
+                            <div>
+                                <input type="text" value="{{page.min_price_checked}}" class="price__input js-min-price">
+                                &nbsp;&ndash;&nbsp;
+                                <input type="text" value="{{page.max_price_checked}}" class="price__input js-max-price">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="catalogue__filter filter sort_mobile js-subfilters">
+                        <p class="filter__title js-subfilter-btn">Сортировать по:</p>
+                        <div class="filter__body js-subfilter">
+                            <select class="sort__select js-sort">
+                                <option value="0">умолчанию</option>
+                                {% for sort_value, sort_title in page.sort_params %}
+                                {% set selected = '' %}
+                                {% if (sort_value == page.sort) %}
+                                {% set selected = 'selected' %}
+                                {% endif %}
+                                <option value="{{sort_value}}" {{selected}}>{{sort_title}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="button button_default js-apply-filters">Применить</button>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="catalogue__cards col">
+            <div class="container-fluid">
+                {% if (show_products != 'true' and page.categories|length > 0) %}
+                    <!--<h3 class="catalogue__subtitle">Подкатегории</h3>-->
+                    <div class="section__cardlist catalogue__cats cardlist row">
+                        {% for category in page.categories %}
+                            {{ include('/inc/category-inner.html', {category: category}) }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if show_products == 'true' %}
+                    {% if page.products|length > 0 %}
+                        <div class="products-title">
+                            <div class="sort">
+                                <div class="sort__title">Сортировать по:</div>
+                                <select class="sort__select js-sort">
+                                    <option value="0">умолчанию</option>
+                                    {% for sort_value, sort_title in page.sort_params %}
+                                        {% set selected = '' %}
+                                        {% if (sort_value == page.sort) %}
+                                            {% set selected = 'selected' %}
+                                        {% endif %}
+                                        <option value="{{sort_value}}" {{selected}}>{{sort_title}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <h3 class="catalogue__subtitle">Товары</h3>
+                        </div>
+                        <div class="row">
+                            {% for product in page.products %}
+                            {{ include('/inc/card.html', {product: product}) }}
+                            {% endfor %}
+                        </div>
+                    {% else%}
+                        {% if (page.selected_filters == 1) %}
+                            <h3>Подходящих товаров не найдено</h3>
+                        {% else %}
+                            <h3>Товаров в данной категории еще нет</h3>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+
+                {% if (page.text) %}
+                    <div class="tinymce-content" style="margin-top: 40px;">{{page.text|raw}}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

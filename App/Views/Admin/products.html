@@ -1,0 +1,131 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>Изображение</th>
+            <th>Название</th>
+            <th>Кол-во / Ед. изм-я</th>
+            <th>Цена</th>
+            <th>Делимость</th>
+            <th>Рейтинг</th>
+            <th>Упр.</th>
+        </tr>
+        </thead>
+        <tbody class="sortable" data-table="products">
+            {% for product in products %}
+                {% set archived = '' %}
+                {% if product.archived == 1 %}
+                {% set archived = 'archived' %}
+                {% endif %}
+                <tr class="{{archived}} js-item" data-id="{{product.id}}">
+                    <td>
+                        {% if (product.image) %}
+                            <img src="/images/gallery/{{product.id}}/{{product.image}}" style="width: 100px">
+                        {% else %}
+                            <img src="/images/nophoto.png" style="width: 100px">
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div>
+                            <a href="/{{product.full_url}}" target="_blank" title="Открыть на сайте">{{product.title}}</a>
+                        </div>
+                        <div style="font-size: 12px; margin: 5px 0;">{{product.full_title}}</div>
+                        {% if (product.popular == 1) %}
+                            <div style="font-size: 13px; color: #9f4dbc">Популярное</div>
+                        {% endif %}
+                        {% if (product.new == 1) %}
+                            <div style="font-size: 13px; color: #55aa00">Новинка</div>
+                        {% endif %}
+                        <div>
+                            Складской код:<br>
+                            <input class="js-edit-product-field" name="depot_id" value="{{product.depot_id}}" style="min-width: 70px;">
+                        </div>
+                        <div>
+                            {{product.depot_title}}
+                        </div>
+                    </td>
+                    <td>
+                        <input class="js-edit-product-field" name="qty" value="{{product.qty}}" style="min-width: 70px; margin-bottom: 5px"><br>
+                        <select class="js-edit-product-field" name="ct" style="min-width: 70px;">
+                            {% for ref_ct in params.ref_counters  %}
+                            <option value="{{ref_ct.id}}" {{ (ref_ct.id == product.ct) ? 'selected' : '' }}>{{ref_ct.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <div>
+                            <input class="js-edit-product-field" name="price" value="{{product.price}}" style="min-width: 70px; width: calc(100% - 35px);"> руб.
+                        </div>
+                        {% for codes in params.all_promocodes %}
+                            <div style="display: flex;flex-wrap: wrap;" title="Применять промокод?">
+                                <input type="checkbox" class="js-edit-product-promo" name="apply_promo"
+                                       style="width: auto; margin-right: 2px;" data-promo_id="{{codes.id}}"
+                                       {{ (codes.id in product.promocodes) ? 'checked' : ''}}>
+                                <span>промокод "{{codes.code}}"</span>
+                            </div>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <input class="js-edit-product-field" name="count_part" value="{{ (product.count_part) ? product.count_part : '' }}"
+                               style="min-width: 70px; margin-bottom: 5px" placeholder="кол-во делимости" title="Количество делимости"><br>
+                        <select class="js-edit-product-field" name="count_type_part"
+                                style="min-width: 70px;" title="Ед. измерения делимости">
+                            <option value="0">не выбрано</option>
+                            {% for ref_ct in params.ref_counters  %}
+                                <option value="{{ref_ct.id}}" {{ (ref_ct.id == product.count_type_part) ? 'selected' : '' }}>
+                                    {{ref_ct.name}}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>{{product.rate}}</td>
+                    <td class='change'>
+                        <div class="control-btn">
+                            <a href='/admin/products?act=edit&id={{product.id}}' title='Редактировать'>
+                                Редактировать
+                            </a>
+                        </div>
+
+                        <div class="control-btn">
+                            <a href='/admin/products?act=add&from_id={{product.id}}' title='Скопировать товар'>
+                                Скопировать
+                            </a>
+                        </div>
+
+                        {% if (product.archived == 0) %}
+                            <div class="control-btn">
+                                <a href='/admin/products?act=add_to_achive&id={{product.id}}' title='Поместить товар в архив'
+                                   onclick="return confirm('Вы действительно хотите поместить этот товар в архив?')">
+                                    Скрыть
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="control-btn">
+                                <a href='/admin/products?act=remove_from_achive&id={{product.id}}' title='Восстановить товар из архива'
+                                   onclick="return confirm('Вы действительно хотите восстановить этот товар из архива?')">
+                                    Восстановить
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        <div class="control-btn">
+                            <a href='/admin/products?act=delete&id={{product.id}}' title='Удалить'
+                               onclick="return confirm('Вы действительно хотите удалить этот товар? Товар будет удален без возможности восстановления')">
+                                Удалить
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

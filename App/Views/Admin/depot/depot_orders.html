@@ -1,0 +1,34 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div>{{info|raw}}</div>
+<div style="margin-top: 50px;">Раздел в разработке...</div>
+<!--
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>№п/п</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% set index = 1 %}
+            {% for depot_order in depot_orders %}
+                <tr>
+                    <td>{{index}}</td>
+                    <td> <pre>{{dump(depot_order)}}</pre> </td>
+                </tr>
+                {% set index = index + 1 %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+-->
+
+{% endblock %}

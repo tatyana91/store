@@ -1,0 +1,135 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+    {% set popular = '' %}
+    {% if product.popular == 1 %}
+        {% set popular = 'checked' %}
+    {% endif %}
+
+    {% set new = '' %}
+    {% if product.new == 1 %}
+        {% set new = 'checked' %}
+    {% endif %}
+
+    <form action='' method='POST' enctype='multipart/form-data'>
+        <div class='input_div input-group col-lg-4'>
+            <span class='input-group-addon' style="padding-left: 0">
+                <input type='checkbox' name='popular' value='{{product.popular}}' {{popular}}>
+            </span>
+            <span class='show_label'>Популярное</span>
+        </div>
+        <div class='input_div input-group col-lg-4'>
+            <span class='input-group-addon' style="padding-left: 0">
+                <input type='checkbox' name='new' value='{{product.new}}' {{new}}>
+            </span>
+            <span class='show_label'>Новинка</span>
+        </div>
+        <div class="item-title">Родительская страница:</div>
+        <select name="parent_id">
+            <option value="0">не выбрано</option>
+            {% for parent_page in pages %}
+                {% set selected = '' %}
+                {% if (parent_page.id == product.parent_id) %}
+                    {% set selected = 'selected' %}
+                {% endif %}
+                <option value="{{parent_page.id}}" {{selected}}>{{parent_page.full_title}}</option>
+            {% endfor %}
+        </select>
+        <div class="item-title">Заголовок:</div>
+        <input type='text' name='title' value='{{product.title}}'/>
+        <div class="item-title">Ссылка для меню (генерируется автоматом из названия):</div>
+        <input type='text' name='url' value='{{product.url}}'/>
+        <div class="item-title">Краткое описание:</div>
+        <textarea name="description" style="height: 100px; resize: vertical">{{product.description}}</textarea>
+        <div class="item-title">Описание (перед вставкой текста очистите его от форматов с помощью
+            <a href="https://www.artlebedev.ru/typograf/" target="_blank">типографа</a>):</div>
+        <div class='tinymce_div'>
+            <textarea class='tinymce' name='text'>{{product.text}}</textarea>
+        </div>
+
+        <div class="item-title">Акции (для выделения нескольких или снятия выделения зажать ctrl):</div>
+        <div>
+            <select name="sales[]" multiple>
+                {% for sales_page in sales_pages %}
+                    {% set selected = '' %}
+                    {% if sales_page.id in product.sales %}
+                        {% set selected = 'selected' %}
+                    {% endif %}
+                    <option value="{{sales_page.id}}" {{selected}}>{{sales_page.title}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="item-title">C этим товаром покупают (для выделения нескольких или снятия выделения зажать ctrl):</div>
+        <div>
+            <select name="goods[]" multiple style="min-height: 455px;">
+                {% for good in products %}
+                    {% set selected = '' %}
+                    {% if good.id in product.goods_array %}
+                        {% set selected = 'selected' %}
+                    {% endif %}
+                    <option value="{{good.id}}" {{selected}}>{{good.full_title}} -> {{good.title}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+
+        <div class="item-title">Характеристики:</div>
+        <div>
+            {% for ref_char in ref_chars %}
+                <div class="ref-char-block js-ref-char-block" data-char_id="{{ref_char.id}}">
+                    <div class="ref-char js-ref-char" >
+                        {{ref_char.title}}:
+                    </div>
+                    <div class="ref-char-value-wrap js-ref-char-value-wrap">
+                        <input class="ref-char-value js-ref-char-value" type="text" autocomplete="off"
+                               name="chars[{{ref_char.id}}]" placeholder="значение"
+                               value="{{ (product.chars[ref_char.id]) ? product.chars[ref_char.id]['value'] : '' }}">
+                        <div class="result js-result"></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <br>
+
+        <div class="item-title">Фотографии (1:1, минимум 410px*410px, перед загрузкой изображений <a href="https://tinypng.com/" target="_blank">оптимизируйте</a> их)</div>
+        <input name='photos[]' type='file' multiple/>
+        <div>
+            {% for photo in product.photos %}
+            <div style='width: 150px; display: inline-block; margin-right: 10px;'>
+                <img src='/images/gallery/{{product.id}}/{{photo.path_middle}}' style='width: 100%;  box-sizing:border-box; border: 1px solid #ccc'/>
+                <div><input type='checkbox' name='img[]' value='{{photo.id}}' /> Удалить</div>
+                <div><input type='text' name='img_alt[]' value='{{photo.alt}}' placeholder='Альт'/></div>
+                <div><input type='text' name='img_rate[]' value='{{photo.rate}}' placeholder='Рейтинг'/></div>
+                <input type='hidden' name='img_id[]' value='{{photo.id}}' />
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="item-title">Количество:</div>
+        <input type='text' name='qty' value='{{product.qty}}' disabled/>
+        <div>
+            <a href="/admin/histories?act=add&product_id={{product.id}}" target="_blank">Добавить приход</a>
+        </div>
+
+        <div class="item-title">Цена:</div>
+        <input type='text' name='price' value='{{product.price}}'/>
+
+        <div class="item-title">Цена со скидкой:</div>
+        <input type='text' name='price_sale' value='{{product.price_sale}}'/>
+
+        <div class="item-title">Артикул:</div>
+        <input type='text' name='barcode' value='{{product.barcode}}'/>
+
+        <div class="item-title">Рейтинг:</div>
+        <input type='text' name='rate' value='{{product.rate}}'/>
+
+        <input type='hidden' name='id' value='{{product.id}}'/>
+        <input type='hidden' name='act' value='{{act}}'/>
+                <input type='submit' value='Сохранить'>
+    </form>
+{% endblock %}

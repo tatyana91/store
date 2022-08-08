@@ -1,0 +1,44 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div>{{info|raw}}</div>
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>№п/п</th>
+            <th>Складской код</th>
+            <th>Название</th>
+            <th>Тип формирования чеков</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% set index = 1 %}
+            {% for retailstore in depot_retailstore %}
+                {% set fiscal_type_title = '' %}
+                {% if (retailstore.fiscalType == 'STANDARD') %}
+                    {% set fiscal_type_title = 'Стандартное' %}
+                {% elseif (retailstore.fiscalType == 'MASTER') %}
+                    {% set fiscal_type_title = 'Стандартное с обработкой облачных операций' %}
+                {% elseif (retailstore.fiscalType == 'CLOUD') %}
+                    {% set fiscal_type_title = 'Облачное' %}
+                {% endif %}
+                <tr>
+                    <td>{{index}}</td>
+                    <td>{{retailstore.id}}</td>
+                    <td>{{retailstore.name}}</td>
+                    <td>{{fiscal_type_title}}</td>
+                    <!-- <td><pre>{{dump(retailstore)}}</pre></td> -->
+                </tr>
+                {% set index = index + 1 %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

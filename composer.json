@@ -1,0 +1,10 @@
+{
+    "require": {
+        "vlucas/phpdotenv": "^5.3",
+        "twig/twig": "^2.0",
+      "ext-pdo": "*",
+      "ext-curl": "*",
+      "ext-json": "*",
+      "ext-gd": "*"
+    }
+}

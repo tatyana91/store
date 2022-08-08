@@ -1,0 +1,21 @@
+{% if page_banners|length > 0 %}
+    <div class="slider slider_catalog jsCatalogSlider" style="overflow: hidden;">
+        {% for banner in page_banners %}
+            {% if (banner.url) %}
+                <a href="{{banner.url}}" class="slider__item">
+                    <picture>
+                        <source srcset="/images/banners_catalog/{{banner.path2}}" media="(max-width: 768px)">
+                        <img class="slider__image" alt="{{banner.alt}}" src="/images/banners_catalog/{{banner.path}}">
+                    </picture>
+                </a>
+            {% else %}
+                <div class="slider__item">
+                    <picture>
+                        <source srcset="/images/banners_catalog/{{banner.path2}}" media="(max-width: 768px)">
+                        <img class="slider__image" alt="{{banner.alt}}" src="/images/banners_catalog/{{banner.path}}">
+                    </picture>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

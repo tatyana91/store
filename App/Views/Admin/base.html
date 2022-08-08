@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/admin/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/admin/style.css?{{date().timestamp}}"/>
+    <link rel="stylesheet" href="/css/jquery-ui.min.css">
+
+    <link rel="shortcut icon" href="/images/favicons_admin/favicon-32x32.png" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons_admin/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons_admin/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons_admin/favicon-16x16.png">
+    <link rel="manifest" href="/images/favicons_admin/site.webmanifest">
+    <link rel="mask-icon" href="/images/favicons_admin/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <meta name="robots" content="noindex,nofollow">
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="https://site.ru/" target=_blank>site.ru</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><div>Добро пожаловать, {{params.login}}</div></li>
+                    <li><a href="/admin/logout">Выйти</a></li>
+                </ul>
+                <div id="mob_menu" class="nav navbar-nav navbar-right">
+                    {% for section, menu_section in params.menu %}
+                        <div>
+                            <div class="panel-heading {{ (menu_section.active == true) ? 'in' : '' }}">
+                                <div>{{section}}</div>
+                            </div>
+                            <div class="panel-collapse" {{ (menu_section.active == true) ? "style='display:block'" : '' }}>
+                                {% for menu_item in menu_section.items %}
+                                <a href="{{menu_item.url}}"
+                                   class="{{ (menu_item.active == true) ? 'active' : '' }}">{{menu_item.title}}</a><br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <div class="nav nav-sidebar">
+                    {% for section, menu_section in params.menu %}
+                        <div>
+                            <div class="panel-heading {{ (menu_section.active == true) ? 'in' : '' }}">
+                                <div>{{section}}</div>
+                            </div>
+                            <div class="panel-collapse" {{ (menu_section.active == true) ? "style='display:block'" : '' }}>
+                                {% for menu_item in menu_section.items %}
+                                    <a href="{{menu_item.url}}"
+                                       class="{{ (menu_item.active == true) ? 'active' : '' }}">{{menu_item.title}}</a><br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div class="adminTitleBlock">
+                    <h1 class="page-header">{{ title }}</h1>
+                    {% if show_add_btn == true %}
+                    <div class="btn">
+                        <a  href="{{add_btn_link}}">Добавить</a>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if (params.unrelated_products > 0) %}
+                    <div class="defaultError">
+                        Внимание! У {{params.unrelated_products}} товаров не указан складской код.
+                        Заказы с участием этих позиций автоматически НЕ будут созданы на складе.
+                    </div>
+                {% endif %}
+
+                <div id="notice">{{ notice }}</div>
+                <div id="error">{{ error }}</div>
+
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="js-edit-error save-result save-result_error"></div>
+    <div class="js-edit-success save-result"></div>
+
+    <script src='/js/jquery-3.2.1.min.js'></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/datepicker-ru.js"></script>
+    <script src='/js/admin/bootstrap.min.js'></script>
+    <script src="/js/admin/tinymce/tinymce.min.js"></script>
+    <script src='/js/admin/script.js?{{date().timestamp}}'></script>
+</body>
+</html>

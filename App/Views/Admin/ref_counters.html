@@ -1,0 +1,27 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Названия</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for ref_counter in ref_counters %}
+                <tr>
+                    <td>{{ref_counter.name}}</td>
+                    <td>{{ref_counter.names}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

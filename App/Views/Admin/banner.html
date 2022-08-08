@@ -1,0 +1,36 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+{% block content %}
+<form action='/admin/banners?act={{act}}&id={{banner.id}}' method='POST' enctype='multipart/form-data'>
+    Текст 1:<br>
+    <input type='text' name='text1' value='{{banner.text1}}'/>
+    Текст 2:<br>
+    <input type='text' name='text2' value='{{banner.text2}}'/>
+    Ссылка на страницу (без домена):<br>
+    <input type='text' name='url' value='{{banner.url}}'/>
+    Баннер (1280px*395px, перед загрузкой картинки оптимизируйте её с помощью сервиса <a href='https://tinypng.com/' target='_blank'>tinypng</a></span>):<br>
+    <input type='file' name='banner'/>
+    {% if (banner.path) %}
+        <img src='/images/banners/{{banner.path}}' style='max-width: 500px'/><br>
+        <div><input type='checkbox' name='del_file' value=''/> Удалить</div><br>
+    {% endif %}
+    <input type="hidden" name="path" value="{{banner.path}}">
+    Баннер мобильной версии (540px*320px, перед загрузкой картинки оптимизируйте её с помощью сервиса <a href='https://tinypng.com/' target='_blank'>tinypng</a></span>):<br>
+    <input type='file' name='banner2'/>
+    {% if (banner.path2) %}
+    <img src='/images/banners/{{banner.path2}}' style='max-width: 300px'/><br>
+    <div><input type='checkbox' name='del_file2' value=''/> Удалить</div><br>
+    {% endif %}
+    <input type="hidden" name="path2" value="{{banner.path2}}">
+    Альт картинки (описание картинки несколькими словами):<br>
+    <input type='text' name='alt' value='{{banner.alt}}'/>
+    Рейтинг:<br>
+    <input type='text' name='rate' value='{{banner.rate}}'/>
+    <input type='hidden' name='id' value='{{banner.id}}'>
+    <input type='submit' name='edit' value='Сохранить'>
+</form>
+{% endblock %}

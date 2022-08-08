@@ -1,0 +1,195 @@
+{% extends "/base.html" %}
+
+{% set page_title = page.title %}
+{% set page_breadcrumbs = page.breadcrumbs %}
+{% set page_banners = page.banners %}
+
+{% block page_content %}
+<div class="page__title">
+    <h1 class="h1">{{page.title}}</h1>
+</div>
+<div class="tab-links">
+    <span class="input-block__title tab-link active" data-tab="1">Профиль</span>
+    <span class="input-block__title tab-link" data-tab="2">Адреса доставки</span>
+    <span class="input-block__title tab-link" data-tab="3">Сменить пароль</span>
+    <span class="input-block__title tab-link" data-tab="4">Заказы</span>
+</div>
+
+<div class="tab active" data-tab-pane="1">
+    <div class="row">
+        <div class="col-xs-12 col-md-4">
+            <div class="input-block checkout__item">
+                <label class="input-block__item input input_width_available">
+                    <span class="input__label">Имя и фамилия <span class="required-asterisk">*</span></span>
+                    <input class="input__control js-require" type="text" value="{{user.name}}" name="name">
+                </label>
+                <label class="input-block__item input input_width_available">
+                    <span class="input__label">Номер телефона <span class="required-asterisk">*</span></span>
+                    <input class="input__control js-require" type="text" value="{{user.phone}}" name="phone">
+                </label>
+                <div class="input-block__item input input_width_available">
+                    <p class="input__label input_width_available">Предпочтительный способ связи</p>
+                    {% for connect_type in connect_types %}
+                        {% set checked = '' %}
+                        {% if (user.connect_type == connect_type.id) %}
+                            {% set checked = 'checked' %}
+                        {% endif %}
+                        <label class="input-block__item input input_inline">
+                            <input type="radio" name="connect-type" class="input__radio" value="{{connect_type.id}}" {{checked}}>
+                            <span class="input__radio-text">{{connect_type.title}}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                <div class="input-block__item input input_width_available">
+                    <p class="input__label input_width_available">Рассылка</p>
+                    <label class="input-block__item input input_width_available">
+                        <input class="input__control input__checkbox" type="checkbox" name="subscribe" {{ (user.subscribe == 1) ? 'checked' : '' }}>
+                        <span class="input__label">Подписка на рассылку новостей и акций</span>
+                    </label>
+                </div>
+                <div class="change-error js-save-data-error"></div>
+                <div class="change-result js-save-data-result"></div>
+                <button class="button button_default js-save-data">Сохранить изменения</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab" data-tab-pane="2">
+    <div class="row">
+        <div class="col-xs-12 col-md-5">
+        <div class="input-block checkout__item">
+            {% if addresses|length > 0 %}
+                {% for address in addresses %}
+                    {{ include('/inc/address.html', {
+                        address: address
+                    })
+                }}
+                {% endfor %}
+            {% else %}
+                {{ include('/inc/address.html')}}
+            {% endif %}
+            <div class="change-error js-result-address-error"></div>
+            <div class="change-result js-result-address-result"></div>
+            <div class="distribute_between js-save-data-address-block">
+                <button class="button button_default js-save-data-address">Сохранить изменения</button>
+                <div class="button button_link nowrap js-add-address-block">Добавить еще один адрес доставки</div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+    <div class="tab" data-tab-pane="3">
+        <div class="row">
+            <div class="col-xs-12 col-md-4">
+            <div class="input-block checkout__item">
+                <label class="input-block__item input input_width_available">
+                    <span class="input__label">Текущий пароль <span class="required-asterisk">*</span></span>
+                    <input class="input__control js-old-password" type="password" value="">
+                </label>
+                <label class="input-block__item input input_width_available">
+                    <span class="input__label">Новый пароль <span class="required-asterisk">*</span></span>
+                    <input class="input__control js-new-password" type="password" value="">
+                </label>
+                <label class="input-block__item input input_width_available">
+                    <span class="input__label">Подтверждение нового пароля <span class="required-asterisk">*</span></span>
+                    <input class="input__control js-new-password2" type="password" value="">
+                </label>
+                <div class="change-error js-change-error"></div>
+                <div class="change-result js-change-result"></div>
+                <button class="button button_default js-change-password">Изменить пароль</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab" data-tab-pane="4">
+    <div class="input-block checkout__item orders">
+        {% for order in orders %}
+        <div class="order">
+            <div class="order__header">
+                <h3 class="order__number js-show-order-details" title="Открыть подробности заказа">Заказ №{{order.order.id}} на сумму {{order.order.total_cost}} руб.</h3>
+                <p><strong>{{order.order.date}}</strong></p>
+            </div>
+            <div class="js-order-details" style="display: none">
+                <div class="order__body">
+                    <div class="order__bodyItem">
+                        <h4>Статус заказа:</h4>
+                        <p style="color: {{params.order_statuses[order.order.status].color}}">
+                            {{params.order_statuses[order.order.status].title}}
+                        </p>
+                    </div>
+                    <div class="order__bodyItem">
+                        <h4>Оплата:</h4>
+                        <p>{{order.order.payment_type_title}}</p>
+                    </div>
+                    {% if (order.order.status == 2) %}
+                    <div class="order__bodyItem">
+                        <h4>Ссылка для оплаты:</h4>
+                        <p>
+                            <a href='{{order.order.paymentFormUrl}}' class='button button_link' target='_blank'>{{order.order.paymentFormUrl|slice(0, 52)}}...</a>
+                            <span>(ссылка действительна до {{order.order.paymentFormUrlLifeTime|date('d.m.Y H:i')}})</span>
+                        </p>
+                    </div>
+                    {% endif %}
+                    <div class="order__bodyItem">
+                        <h4>Получатель:</h4>
+                        <p>{{order.order.name}}</p>
+                    </div>
+                    <div class="order__bodyItem">
+                        {% if (order.order.pvz_id) > 0 %}
+                            <h4>Пункт выдачи заказа</h4>
+                            <p>{{order.order.pvz_title}}</p>
+                        {% else %}
+                            <h4>Адрес доставки</h4>
+                            <p>{{order.order.address_title}}</p>
+                        {% endif %}
+                    </div>
+                    {% if (order.order.delivery_date) %}
+                    <div class="order__bodyItem">
+                        <h4>Дата доставки:</h4>
+                        <p>{{ order.order.delivery_date|date('d.m.Y')}}, {{ order.order.delivery_time }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <table class="order__table order-table">
+                    <thead>
+                    <tr class="table__head-row">
+                        <th></th>
+                        <th>Товар</th>
+                        <th class="text-right">Цена</th>
+                        <th class="text-right">Количество</th>
+                        <th class="text-right">Стоимость</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in order.products %}
+                    <tr class="cart-item js-cart-item" data-id="{{product.id}}">
+                        <td class="cart__image">
+                            <div>
+                                {% if product.main_photo.path_small != '' %}
+                                <img src="/images/gallery/{{product.product_id}}/{{product.main_photo.path_small}}"
+                                     alt="{{product.main_photo.alt}}" style="width: 100%">
+                                {% else %}
+                                <img src="/images/nophoto.png"
+                                     alt="{{product.title}}" style="width: 100%">
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="flex_default">
+                                <span>{{ loop.index }}.</span>&nbsp;<a href="/{{product.full_url}}" class="button button_link" target="_blank">{{product.title}}</a>
+                            </div>
+                            <div class="cart__item-art">{{product.code}}</div>
+                        </td>
+                        <td class="nowrap text-right">{{product.price}} руб.</td>
+                        <td class="nowrap text-right">{{product.count}} {{params.ref_counters[product.ct].name}}</td>
+                        <td class="nowrap text-right">{{product.cost}} руб.</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

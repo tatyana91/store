@@ -1,0 +1,45 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Дата</th>
+            <th>Пользователь</th>
+            <th>Тип истории</th>
+            <th>Продукт</th>
+            <th>Количество</th>
+            <th>Тип документа</th>
+            <th>Номер документа</th>
+            <th>Дата документа</th>
+            <th>Поставщик</th>
+            <th>ИНН</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for history in histories %}
+                <tr>
+                    <td>{{history.id}}</td>
+                    <td>{{history.time|date("d.m.Y H:i")}}</td>
+                    <td>{{history.login}}</td>
+                    <td>{{history.dir_title}}</td>
+                    <td>{{history.product_title}}</td>
+                    <td>{{history.qty}}</td>
+                    <td>{{history.doc_name}}</td>
+                    <td>{{history.doc_num}}</td>
+                    <td>{{(history.doc_date > 0) ? history.doc_date|date("d.m.Y") : ''}}</td>
+                    <td>{{history.supp_title}}</td>
+                    <td>{{history.supp_inn}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

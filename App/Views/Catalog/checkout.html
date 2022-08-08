@@ -1,0 +1,263 @@
+{% extends "/base.html" %}
+
+{% set page_title = page.title %}
+{% set page_breadcrumbs = page.breadcrumbs %}
+{% set page_banners = page.banners %}
+
+{% block page_content %}
+    <div class="page__title">
+        <h1 class="h1">{{page.title}}</h1>
+    </div>
+    <div class="js-checkout-form checkout">
+        {% if product_errors > 0 %}
+            <p>Что то пошло не так.. Не могу оформить заказ. В вашей корзине обнаружены товары, у которых недостаточно необходимого количества на складе.</p>
+            <p>
+                <a href="/cart">Вернуться в корзину</a>
+            </p>
+        {% else %}
+            {% if (params.auth == false) %}
+            <div class="cart-auth-notice">
+                <a href="javasript:void(0)" class="js-auth-popup">Войти в личный кабинет</a>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-xs-12 col-md-6 order-md-2">
+                    <div class="card-sticky cartProducts cartBlock" style="border: 0">
+                        <h3 class="h1">Ваш заказ</h3>
+                        <table class="table checkout__cart">
+                            <tbody>
+                            {% for product in page.products %}
+                            <tr class="cart-item">
+                                <td  class="cart__image">
+                                    <div>
+                                        {% if product.main_photo.path_small != '' %}
+                                        <img src="/images/gallery/{{product.id}}/{{product.main_photo.path_small}}"
+                                             alt="{{product.main_photo.alt}}">
+                                        {% else %}
+                                        <img src="/images/nophoto.png"
+                                             alt="{{product.title}}">
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cart__item-name">
+                                        <a href="/{{product.full_url}}" class="button button_link" target="_blank">{{product.title}}</a>
+                                    </div>
+                                    <div class="cart__item-art">{{product.code}}</div>
+                                </td>
+                                <td class="nowrap text-right">
+                                    {{ (product.price_sale) ? product.price_sale : product.price }} руб.
+                                    х {{product.cart_count}} {{params.ref_counters[product.ct].name}}</td>
+                                <td class="nowrap text-right">
+                                    <strong>{{product.cost}} руб.</strong>
+                                    <div class="discountPrice js-discount-price" data-id="{{product.id}}"></div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="cart__totals">
+                            <div class="promo">
+                                <span>Промокод:</span>
+                                <input type="text" class="promo__text" name="promo" value="{{params.promo}}">
+                                <button class="button button_tr promo__btn js-apply-promo">Применить</button>
+                                <span class="promo__result js-promo-result"></span>
+                            </div>
+                            <div class="cart__delivery-rate">Сумма заказа: <strong><span class="js-cart-cost">{{page.cart_cost}}</span> руб.</strong></div>
+                            <div class="cart__discount js-discount-block">Скидка по промокоду: <strong><span class="js-discount"></span> руб.</strong></div>
+                            <div class="cart__delivery-rate">Стоимость доставки: <strong>{{page.delivery_cost}} руб.</strong></div>
+                            <div class="cart__delivery-rate cart__total">Итого: <strong><span class="js-total-cost">{{page.total_cost}}</span> руб.</strong></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6 order-md-1">
+                    <div class="input-block checkout__item cartBlock">
+                        <h3 class="input-block__title">1. Ваши данные</h3>
+                        <label class="input-block__item input input_width_available">
+                            <span class="input__label">Имя и фамилия <span class="required-asterisk">*</span></span>
+                            <input class="input__control js-require-field" type="text" name="name" value="{{user.name}}">
+                        </label>
+                        <label class="input-block__item input input_width_available">
+                            <span class="input__label">Номер телефона <span class="required-asterisk">*</span></span>
+                            <input class="input__control js-require-field" type="text" name="phone" value="{{user.phone}}">
+                        </label>
+                        <label class="input-block__item input input_width_available">
+                            <span class="input__label">Адрес электронной почты</span>
+                            <input class="input__control" type="text" name="email" value="{{user.email}}">
+                        </label>
+                        <label class="input-block__item input input_width_available">
+                            <span class="input__label">Комментарий к заказу</span>
+                            <textarea class="input__control checkbox-comment" name="comment" autocomplete="off"></textarea>
+                        </label>
+                    </div>
+                    <div class="input-block checkout__item cartBlock">
+                        <h3 class="input-block__title">2. Адрес доставки</h3>
+
+                        {% set display_pvz = 0 %}
+                        {% if (params.pvz|length) %}
+                            {% set display_pvz = 1 %}
+                            <div class="switch">
+                                <span class="switch__title switch__title_active js-checkout-receiving" data-type="delivery" title="Заказать с доставкой">Доставка</span>
+                                <span class="switch__title js-checkout-receiving" data-type="pickup" title="Заказать товар с самовывозом из пункта выдачи заказов">Самовывоз</span>
+                            </div>
+                        {% else %}
+                            <span class="switch__title switch__title_active js-checkout-receiving"
+                                  data-type="delivery"
+                                  title="Заказать с доставкой" style="display:none;">Доставка</span>
+                        {% endif %}
+
+                        {% if (display_pvz) %}
+                            <div data-block="pickup" style="{{ (display_pvz) ? 'display: none' : '' }}">
+                                <div class="input-block__item row">
+                                    <div class="input col errorText">
+                                        <div style="line-height: 18px;">
+                                            Самовывоз доступен только для заказов с онлайн оплатой.<br>
+                                            Приносим извинения за временные неудобства.
+                                        </div>
+                                    </div>
+                                </div>
+                                {% for pvz_point in params.pvz %}
+                                    {% set checked = '' %}
+                                    {% if (loop.index == 1) %}
+                                        {% set checked = 'checked' %}
+                                    {% endif %}
+                                    <label class="filter__value filter__value_width_available">
+                                        <input type="radio" name="pvz" class="input__radio" value="{{pvz_point.id}}" {{checked}}>
+                                        <span class="input__radio-text">{{pvz_point.title}}</span>
+                                    </label>
+                                {% endfor %}
+
+                                <!-- <div class="input-block__item cartMap">
+                                    {{ include('/inc/pvz_map.html') }}
+                                </div>-->
+
+                                <div class="input-block__item row" style="margin-top: 6px;">
+                                    <div class="input col">
+                                        <div style="line-height: 18px;">
+                                            Заказ можно будет забрать {{ "now"|date_modify("+2 day")|date("d.m.Y") }} после 17:00.<br>
+                                            Заказы в пунктах выдачи хранятся в течении 5 дней.<br>
+                                            Стоимость доставки до пункта выдачи:<br>
+                                            - при заказе на сумму до 2000 руб - 99 руб,<br>
+                                            - при заказе на сумму от 2000 руб - бесплатно.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div data-block="delivery" style="{{ (display_pvz) ? '' : 'display: none' }}">
+                            <div class="input-block__item row">
+                                <div class="input col errorText">
+                                    <div style="line-height: 18px;">
+                                        Внимание! Изменились <a href='/dostavka' target="_blank" title="Открыть условия доставки в новой вкладке" class="button button_link" style="color: inherit; text-decoration: underline">условия доставки</a>.										
+                                    </div>
+                                </div>
+                            </div>
+                            {% for address in user.addresses %}
+                            <label class="filter__value filter__value_width_available">
+                                <input type="radio" name="address" class="input__radio js-saved-address" value="{{address.id}}" data-region="{{address.region}}">
+                                <span class="input__radio-text">{{address.title}}</span>
+                            </label>
+                            {% endfor %}
+                            <label class="filter__value filter__value_width_available">
+                                <input class="input__radio js-filter-value" name="address" type="radio" checked>
+                                <div class="input__radio-text">Новый адрес</div>
+                            </label>
+                            <div class="new-address js-new-address">
+                                <label class="input-block__item input input_width_available">
+                                    <span class="input__label">Регион <span class="required-asterisk">*</span></span>
+                                    <select class="input__control js-require-address-field" name="region">
+                                        {% for region in params.regions %}
+                                            <option value="{{region.id}}">{{region.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                                <label class="input-block__item input input_width_available">
+                                    <span class="input__label">Город <span class="required-asterisk">*</span></span>
+                                    <input class="input__control js-require-address-field" name="city" value="Санкт-Петербург">
+                                </label>
+                                <label class="input-block__item input input_width_available">
+                                    <span class="input__label">Улица <span class="required-asterisk">*</span></span>
+                                    <input class="input__control js-require-address-field" type="text" name="street" value="">
+                                </label>
+
+                                <div class="input-block__item row">
+                                    <label class="input col">
+                                        <span class="input__label">Дом <span class="required-asterisk">*</span></span>
+                                        <input class="input__control js-require-address-field" type="text" name="house" value="">
+                                    </label>
+                                    <label class="input col">
+                                        <span class="input__label">Корп.</span>
+                                        <input class="input__control" type="text" name="corpus" value="">
+                                    </label>
+                                    <label class="input col">
+                                        <span class="input__label">Стр.</span>
+                                        <input class="input__control" type="text" name="building" value="">
+                                    </label>
+                                </div>
+                                <div class="input-block__item row">
+                                    <label class="input col">
+                                        <span class="input__label">Квартира</span>
+                                        <input class="input__control" type="text" name="flat" value="">
+                                    </label>
+                                    <label class="input col">
+                                        <span class="input__label">Подъезд</span>
+                                        <input class="input__control" type="text" name="entrance" value="">
+                                    </label>
+                                    <label class="input col">
+                                        <span class="input__label">Этаж</span>
+                                        <input class="input__control" type="text" name="floor" value="">
+                                    </label>
+                                </div>
+                                <div class="input-block__item row">
+                                    <label class="input col">
+                                        <span class="input__label">Дата доставки <span class="required-asterisk">*</span></span>
+                                        <input type="text" name="date" class="input__control js-datepicker" value='{{ "now"|date_modify("+1 day")|date("d.m.Y") }}' readonly>
+                                    </label>
+                                    <label class="input col">
+                                        <span class="input__label">Время доставки <span class="required-asterisk">*</span></span>
+                                        <select name="time" class="input__control">
+                                            {{ include('/inc/delivery_options.html', {
+                                                delivery_time_items: delivery_params.times
+                                            })
+                                            }}
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-block checkout__item cartBlock">
+                        <h3 class="input-block__title">3. Способ оплаты</h3>
+                        <label class="filter__value filter__value_width_available">
+                            <input class="input__radio js-filter-value" name="payment-type" type="radio" value="1" checked>
+                            <div class="input__radio-text">Наличными или картой при получении</div>
+                        </label>
+                        <label class="filter__value filter__value_width_available">
+                            <input class="input__radio js-filter-value" name="payment-type" type="radio" value="2">
+                            <div class="input__radio-text">Банковской картой онлайн</div>
+                        </label>
+                    </div>
+                    <div class="input-block checkout__item cartBlock">
+                        <h3 class="input-block__title">4. Согласие на обработку данных</h3>
+                        <div class="input-block__agree-block">
+                            <label class="filter__value filter__value_width_available">
+                                <input class="input__checkbox js-filter-value js-agree" type="checkbox" checked>
+                                <div class="input__checkbox-text">Согласие на обработку <a href="/politika_konfidencialnosti" target="_blank">персональных данных</a></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="checkout-error js-checkout-error"></div>
+                    <div class="checkout-required">
+                        <span class="checkout-required__asterisk">*</span>
+                        <span class="checkout-required__text">обязательные к заполнению поля</span>
+                    </div>
+                    <div class="checkout__btns">
+                        <button class="button button_default checkout__pay js-create-order">Создать заказ</button>
+                        <div class="checkout__loader js-checkout-loader"></div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

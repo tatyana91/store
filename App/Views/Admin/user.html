@@ -1,0 +1,17 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+    <form action='/admin/users?act={{act}}&id={{user.id}}' method='POST'>
+        <div class="item-title">Логин:</div>
+        <input type='text' name='login' value='{{user.login}}' required/>
+        <div class="item-title">Пароль:</div>
+        <input type='password' name='password' value='' required/>
+        <input type='hidden' name='id' value='{{user.id}}'/>
+        <input type='hidden' name='act' value='{{act}}'/>
+        <input type='submit' value='Сохранить'>
+    </form>
+{% endblock %}

@@ -1,0 +1,313 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+{% set can_edit = 0 %}
+{% set can_edit_products = 1 %}
+{% if (order.order.status in [1,2,3]) %}
+    {% set can_edit = 1 %}
+{% endif %}
+
+{% if (order.order.status in [2,3,4,5]) %}
+    {% set can_edit_products = 0 %}
+{% endif %}
+
+<div class="defaultError">{{error}}</div>
+
+<div class="order-block">
+    <h4>Общая информация</h4>
+    <div><b>Заказ:</b> №{{order.order.id}} от {{order.order.date|date("d.m.Y H:i")}}</div>
+    <div>
+        <b>Статус:</b>
+        <span style="color: {{ params.order_statuses[order.order.status].color }}">{{ params.order_statuses[order.order.status].title }}</span>
+    </div>
+    {% if order.order.pvz_title %}
+        <div><b>Пункт выдачи:</b> {{order.order.pvz_title}}</div>
+    {% endif %}
+    <div><b>Способ оплаты:</b> {{order.order.payment_type_title}}</div>
+    <div><b>Номер заказа на складе:</b> {{order.order.depot_number}}</div>
+    <div><b>Складской код:</b> {{order.order.depot_id}}</div>
+    {% if (order.order.receipt_link) %}
+        <div><b>Товарный чек:</b> <a href="{{order.order.receipt_link}}" target="_blank" class="defaultLink">скачать</a></div>
+    {% endif %}
+    <br>
+    <div class='table-responsive'>
+        <table class='table table-striped table-condensed'>
+            <thead>
+            <tr>
+                <th>Пользователь</th>
+                <th>Телефон</th>
+                <th>Эл. почта</th>
+                <th>Стоимость</th>
+                <th>Доставка</th>
+                <th>Итого</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="js-edit-order" data-order_id="{{order.order.id}}">
+                <td>
+                    {% if (can_edit == 1) %}
+                    <input type="text" data-field="name" value="{{order.order.name}}">
+                    {% else %}
+                    {{order.order.name}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (can_edit == 1) %}
+                    <input type="text" data-field="phone" value="{{order.order.phone}}">
+                    {% else %}
+                    {{order.order.phone}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (can_edit == 1) %}
+                    <input type="text" class="js-order-email" data-field="email" value="{{order.order.email}}">
+                    {% else %}
+                    {{order.order.email}}
+                    {% endif %}
+                </td>
+                <td style="font-weight: bold;">
+                    <span class="js-order-cart-cost">{{order.order.cart_cost}}</span>
+                    <span> руб.</span>
+                </td>
+                <td>
+                    {% if (can_edit == 1 and can_edit_products == 1) %}
+                    <input type="text" data-field="delivery_cost" value="{{order.order.delivery_cost}}" style="width: calc(100% - 35px);">
+                    {% else %}
+                    <span class="js-order-delivery-cost">{{order.order.delivery_cost}}</span>
+                    {% endif %}
+                    <span> руб.</span>
+                </td>
+                <td style="font-weight: bold;">
+                    <div>
+                        <span class="js-order-total-cost">{{order.order.total_cost}}</span>
+                        <span> руб.</span>
+                    </div>
+                    {% if (can_edit == 1 and can_edit_products == 1) %}
+                    <div>
+                        <a href="javascript:void(0)" class="js-calc-order">Пересчитать</a>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="order-block">
+    <h4>Адрес доставки</h4>
+    <div class='table-responsive'>
+        <table class='table table-striped table-condensed'>
+            <thead>
+            <tr>
+                <th>Регион</th>
+                <th>Город</th>
+                <th>Улица</th>
+                <th>Дом</th>
+                <th>Корпус</th>
+                <th>Квартира</th>
+                <th>Строение</th>
+                <th>Подъезд</th>
+                <th>Этаж</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="js-edit-order" data-order_id="{{order.order.id}}">
+                <td>
+                    {% if (can_edit == 1) %}
+                        <select class="input__control js-require-address-field" name="region" data-field="region">
+                            <option value="0">не указано</option>
+                            {% for region in params.regions %}
+                                <option value="{{region.id}}" {{ (region.id == order.order.region) ? 'selected' : '' }}>{{region.name}}</option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                    {{order.order.city}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (can_edit == 1) %}
+                    <input type="text" data-field="city" value="{{order.order.city}}">
+                    {% else %}
+                    {{order.order.city}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (can_edit == 1) %}
+                    <input type="text" data-field="street" value="{{order.order.street}}">
+                    {% else %}
+                    {{order.order.street}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (can_edit == 1) %}
+                    <input type="text" data-field="house" value="{{order.order.house}}">
+                    {% else %}
+                    {{order.order.house}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (can_edit == 1) %}
+                    <input type="text" data-field="corpus" value="{{order.order.corpus}}">
+                    {% else %}
+                    {{order.order.corpus}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (can_edit == 1) %}
+                    <input type="text" data-field="flat" value="{{order.order.flat}}">
+                    {% else %}
+                    {{order.order.flat}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (can_edit == 1) %}
+                    <input type="text" data-field="building" value="{{order.order.building}}">
+                    {% else %}
+                    {{order.order.building}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (can_edit == 1) %}
+                    <input type="text" data-field="entrance" value="{{order.order.entrance}}">
+                    {% else %}
+                    {{order.order.entrance}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (can_edit == 1) %}
+                    <input type="text" data-field="floor" value="{{order.order.floor}}">
+                    {% else %}
+                    {{order.order.floor}}
+                    {% endif %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="order-block">
+    <h4>Дата и время доставки</h4>
+    <div class='table-responsive'>
+        <table class='table table-striped table-condensed' style="width: auto;">
+            <thead>
+            <tr>
+                <th>Дата доставки</th>
+                <th>Время доставки</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="js-edit-order" data-order_id="{{order.order.id}}">
+                <td>
+                    {% set delivery_date = '' %}
+                    {% if (order.order.delivery_date > 0) %}
+                        {% set delivery_date = order.order.delivery_date|date("d.m.Y") %}
+                    {% endif %}
+
+                    {% if (can_edit == 1) %}
+                        <input type="text" class="js-datepicker" data-field="delivery_date" data-order_id="{{order.order.id}}" value='{{delivery_date}}'>
+                    {% else %}
+                        {{delivery_date}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (can_edit == 1) %}
+                        <select data-field="delivery_time" name="time" data-order_id="{{order.order.id}}">
+                            {{ include('/inc/delivery_options.html', {
+                                delivery_time_items: delivery_time_items
+                                })
+                            }}
+                        </select>
+                    {% else %}
+                        {{order.order.delivery_time}}
+                    {% endif %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="order-block">
+    <h4>Товары заказа</h4>
+    <div class='table-responsive'>
+        <table class='table table-striped table-condensed'>
+            <thead>
+            <tr class="table__head-row">
+                <th>№п/п</th>
+                <th>Товар</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Стоимость</th>
+                {% if (can_edit == 1 and can_edit_products == 1) %}
+                <th>Управление</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody class="js-cart-products">
+            {% for product in order.products %}
+            {{ include('/Admin/inc/order_item.html', {
+            loop_index: loop.index
+            })
+            }}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if (can_edit == 1 and can_edit_products == 1) %}
+        <div class="btn add-order-product js-add-order-product" data-order_id="{{order.order.id}}">Добавить товар</div>
+        <div style="display: table; clear: both"></div>
+    {% endif %}
+</div>
+
+{% if (can_edit == 1 or order.order.comment) %}
+    <div class="order-block">
+        <h4>Комментарий к заказу</h4>
+        <div class="js-edit-order" data-order_id="{{order.order.id}}">
+            {% if (can_edit == 1) %}
+            <textarea data-field="comment" style="width: 100%;min-width: 150px;resize: vertical; min-height: 100px;">{{order.order.comment}}</textarea>
+            {% else %}
+            {{order.order.comment}}
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+
+{% if order.order.logs|length > 0 %}
+    <div class="order-block logs-block">
+        <h4>История заказа</h4>
+        <div class='table-responsive'>
+            <table class='table table-striped table-condensed'>
+                <thead>
+                <tr class="table__head-row">
+                    <th>Дата</th>
+                    <th>Пользователь</th>
+                    <th>История</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for log in order.order.logs %}
+                    <tr>
+                        <td>{{log.time|date("d.m.Y H:i")}}</td>
+                        <td>{{log.user_login}}</td>
+                        <td>{{log.history}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endif %}
+
+<div class="send-order-mail-wrap">
+    <div class="btn send-order-mail js-send-edit-mail" data-order_id="{{order.order.id}}" data-type="user">Отправить письмо клиенту</div>
+    <div class="btn send-order-mail js-send-edit-mail" data-order_id="{{order.order.id}}" data-type="admin">Отправить письмо нам</div>
+</div>
+
+{% endblock %}

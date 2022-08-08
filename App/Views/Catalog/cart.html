@@ -1,0 +1,97 @@
+{% extends "/base.html" %}
+
+{% set page_title = page.title %}
+{% set page_breadcrumbs = page.breadcrumbs %}
+{% set page_banners = page.banners %}
+
+{% block page_content %}
+    <div class="page__title">
+      <h1 class="h1">{{page.title}}</h1>
+    </div>
+    <div class="cart js-cart">
+        {% if (page.products|length > 0) %}
+            <table class="table cart-table">
+                <thead>
+                <tr class="table__head-row">
+                    <th></th>
+                    <th class="cart-table__name">Товар</th>
+                    <th class="text-right">Цена</th>
+                    <th>Количество</th>
+                    <th class="text-right">Стоимость</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for product in page.products %}
+                        <tr class="cart-item js-cart-item" data-id="{{product.id}}">
+                            <td  class="cart__image">
+                                <div>
+                                    {% if product.main_photo.path_small != '' %}
+                                        <img src="/images/gallery/{{product.id}}/{{product.main_photo.path_small}}"
+                                             alt="{{product.main_photo.alt}}">
+                                    {% else %}
+                                        <img src="/images/nophoto.png"
+                                             alt="{{product.title}}">
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cart__item-name">
+                                    <a href="/{{product.full_url}}" class="button button_link" target="_blank">{{product.title}}</a>
+                                </div>
+                                <div class="cart__item-art">{{product.code}}</div>
+                            </td>
+                            <td class="cart-table__price text-right">
+                                {% if (product.price_sale) %}
+                                    <span class="card__price_sale">{{product.real_price}} руб.</span>
+                                    <span>{{product.price_sale}} руб.</span>
+                                {% else %}
+                                    <span>{{product.price}} руб.</span>
+                                {% endif %}
+                            </td>
+                            <td class="js-change-item-count" data-id="{{product.id}}">
+                                <div class="cart-table__controls">
+                                    <button class="button button_adjust js-cart-dec" data-product-id="{{product.id}}">&ndash;</button>
+                                    <input type="text" class="cart-change js-count" value="{{product.cart_count}}" data-product-id="{{product.id}}">
+                                    <button class="button button_adjust js-cart-inc" data-product-id="{{product.id}}">+</button>
+                                </div>
+                                <div class="cart-table__free-count-error js-free-count" data-product-id="{{product.id}}"></div>
+                            </td>
+                            <td class="cart-table__cost text-right">
+                                <strong class="js-item-cost">{{product.cost}}</strong><strong>&nbsp;руб.</strong>
+                                <div class="discountPrice js-discount-price" data-id="{{product.id}}"></div>
+                            </td>
+                            <td>
+                                <button class="button button_icon js-remove-from-cart-list" data-id="{{product.id}}">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 1L9 9M17 17L9 9M9 9L17 1M9 9L1 17" stroke="#0F8CE6" stroke-width="2" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="cart__totals">
+                <div class="promo">
+                    <span>Промокод:</span>
+                    <input type="text" class="promo__text" name="promo" value="{{params.promo}}" autocomplete="off">
+                    <button class="button button_tr promo__btn js-apply-promo">Применить</button>
+                    <span class="promo__result js-promo-result"></span>
+                </div>
+                <div class="cart__delivery-rate">Сумма заказа: <strong><span class="js-cart-cost">{{page.cart_cost}}</span> руб.</strong></div>
+                <div class="cart__discount js-discount-block">Скидка по промокоду: <strong><span class="js-discount"></span> руб.</strong></div>
+                <a class="cart__checkout button button_default js-checkout-btn" href="javascript:void(0)">Оформить заказ</a>
+            </div>
+        {% else %}
+            <h2>В корзине нет товаров</h2>
+            <a class="cart__checkout button button_link" href="/katalog">Перейти в каталог</a>
+        {% endif %}
+    </div>
+
+    {{ include('/inc/goods.html', {
+    goods_info: page.goods_info,
+    goods_info_title: 'С этими товарами покупают:'
+    })
+    }}
+{% endblock %}

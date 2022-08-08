@@ -1,0 +1,56 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+    <form action='/admin/histories?act={{act}}&id={{history.id}}' method='POST' enctype='multipart/form-data'>
+        <div class="item-title">Товар:</div>
+        <select name="product_id" required>
+            <option value="0">не выбрано</option>
+            {% for product_id, product_title in products %}
+                {% set selected = '' %}
+                {% if (history.product_id == product_id) %}
+                    {% set selected = 'selected' %}
+                {% endif %}
+                <option value="{{product_id}}" {{selected}}>{{product_title}}</option>
+            {% endfor %}
+        </select>
+
+        {% set selected = '' %}
+        {% if (history.dir == 1) %}
+            {% set selected = 'selected' %}
+        {% endif %}
+        <div class="item-title">Тип документа:</div>
+        <select name="dir" required>
+            <option value="0">не выбрано</option>
+            <option value="1" {{selected}}>приход</option>
+        </select>
+
+        <div class="item-title">Количество:</div>
+        <input type='text' name='qty' value='{{history.qty}}' required/>
+
+        <div class="item-title">Приходный документ:</div>
+        <select name="doc_name">
+            <option value="">не выбрано</option>
+            <option value="Товарная накладная">Товарная накладная</option>
+            <option value="Счет-фактура">Счет-фактура</option>
+            <option value="Акт">Акт</option>
+            <option value="Протокол">Протокол</option>
+        </select>
+        <div class="item-title">Номер документа:</div>
+        <input type='text' name='doc_num' value='{{history.doc_num}}'/>
+        <div class="item-title">Дата документа:</div>
+        <input type='date' name='doc_date' value='{{history.doc_date}}'/>
+
+        <div class="item-title">Поставщик (ООО "Поставщик"):</div>
+        <input type='text' name='supp_title' value='{{history.supp_title}}'/>
+        <div class="item-title">ИНН поставщика (12 цифр для физ лиц или 10 цифр для юр лиц):</div>
+        <input type='text' name='supp_inn' value='{{history.supp_inn}}'/>
+
+        <input type='hidden' name='id' value='{{history.id}}'/>
+        <input type='hidden' name='act' value='{{act}}'/>
+        <input type='submit' value='Сохранить'>
+    </form>
+{% endblock %}

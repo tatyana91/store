@@ -1,0 +1,17 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+    <form action='/admin/ref_counters?act={{act}}' method='POST'>
+        <div class="item-title">Название:</div>
+        <input type='text' name='name' value=''/>
+        <div class="item-title">Названия (по формату "штука|штуки|штук"):</div>
+        <input type='text' name='names' value=''/>
+        <input type='hidden' name='id' value=''/>
+        <input type='hidden' name='act' value='{{act}}'/>
+        <input type='submit' value='Сохранить'>
+    </form>
+{% endblock %}

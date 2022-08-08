@@ -1,0 +1,64 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+{% block content %}
+
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>№ п/п</th>
+            <th>Адрес</th>
+            <th>Координаты</th>
+            <th>Описание</th>
+            <th>Телефон</th>
+            <th>Режим работы</th>
+            <th>Рейтинг</th>
+            <th>Управление</th>
+        </tr>
+        </thead>
+        <tbody class="sortable" data-table="pvz">
+        {% for pvz_item in pvz_items %}
+        {% set archived = '' %}
+        {% if pvz_item.archived == 1 %}
+        {% set archived = 'archived' %}
+        {% endif %}
+        <tr class="{{archived}} js-item" data-id="{{pvz_item.id}}">
+            <td>{{ loop.index }}</td>
+            <td>{{pvz_item.title}}</td>
+            <td>{{pvz_item.coords}}</td>
+            <td>{{pvz_item.text}}</td>
+            <td>{{pvz_item.phone}}</td>
+            <td>{{pvz_item.worktime}}</td>
+            <td>{{pvz_item.rate}}</td>
+            <td class='change'>
+                <div class="control-btn">
+                    <a href='/admin/pvz?act=edit&id={{pvz_item.id}}' title='Редактировать'>
+                        Редактировать
+                    </a>
+                </div>
+                {% if (pvz_item.archived == 0) %}
+                <div class="control-btn">
+                    <a href='/admin/pvz?act=add_to_achive&id={{pvz_item.id}}' title='Поместить в архив'
+                       onclick="return confirm('Вы действительно хотите поместить этот ПВЗ в архив?')">
+                        Скрыть
+                    </a>
+                </div>
+                {% else %}
+                <div class="control-btn">
+                    <a href='/admin/pvz?act=remove_from_achive&id={{pvz_item.id}}' title='Восстановить из архива'
+                       onclick="return confirm('Вы действительно хотите восстановить этот ПВЗ из архива?')">
+                        Восстановить
+                    </a>
+                </div>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

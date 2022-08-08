@@ -1,0 +1,75 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div>{{info|raw}}</div>
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>№п/п</th>
+            <th>Складской код</th>
+            <th>Название на складе</th>
+            <th>Кол-во на складе (остаток, резерв, доступно)</th>
+            <th>Ед. изм</th>
+            <th>Цена на складе</th>
+            <th>Товар на сайте</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% set index = 1 %}
+            {% for depot_product in depot_products %}
+                <tr>
+                    <td>{{index}}</td>
+                    <td>{{depot_product.depot_id}}</td>
+                    <td>{{depot_product.title}}</td>
+                    <td>{{depot_product.stock}} - {{depot_product.reserve}} - {{depot_product.qty}}</td>
+                    <td>{{params.ref_counters[depot_product.ct].name}}</td>
+                    <td>
+                        <div>{{depot_product.price}}руб.</div>
+                        <div style="color:{{depot_product.style_color}}">{{depot_product.style_title}}</div>
+                    </td>
+                    <td>
+                        {% if (depot_product.site_product.id > 0) %}
+                            <div>
+                                {{depot_product.site_product.title}},
+                                {{depot_product.site_product.qty ~ params.ref_counters[depot_product.site_product.ct].name}},
+                                {{depot_product.site_product.price}}руб.
+                            </div>
+                            {% if (depot_product.site_product.count_part > 0) %}
+                                <div>
+                                    1
+                                    {{params.ref_counters[depot_product.site_product.ct].name}}
+                                    =
+                                    {{depot_product.site_product.count_part}}
+                                    {{params.ref_counters[depot_product.site_product.count_type_part].name}}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        <select class="js-save-product-bounds" style="width: 500px;"
+                                data-guid="{{depot_product.depot_id}}" data-title="{{depot_product.title}}">
+                            <option value="0">не выбрано</option>
+                            {% for product in products %}
+                            <option value="{{product.id}}" {{(depot_product.site_product.id == product.id) ? 'selected' : ''}}>
+                            {{product.title}}, {{product.qty ~ params.ref_counters[product.ct].name}}, {{product.price}}руб.
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                {% set index = index + 1 %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="send-order-mail-wrap">
+    <div class="btn send-order-mail js-create-depot-products">Создать новые товары</div>
+    <div class="btn send-order-mail js-update-depot-products" title="Обновить остатки, ед. измерения, цены, названия">Обновить данные товаров</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>Логин</th>
+            <th>Управление</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                    <td>{{user.login}}</td>
+                    <td class='change'>
+                        <div class="control-btn">
+                            <a href='/admin/users?act=edit&id={{user.id}}' title='Редактировать'>
+                                Редактировать
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

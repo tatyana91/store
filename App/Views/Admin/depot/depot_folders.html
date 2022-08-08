@@ -1,0 +1,44 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div>{{info|raw}}</div>
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>№п/п</th>
+            <th>Складской код</th>
+            <th>Название на складе</th>
+            <th>Раздел на сайте</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% set index = 1 %}
+            {% for depot_folder in depot_folders %}
+                <tr>
+                    <td>{{index}}</td>
+                    <td>{{depot_folder.id}}</td>
+                    <td>{{ (depot_folder.pathName) ? "/" ~ depot_folder.pathName : '' }}/{{depot_folder.name}}</td>
+                    <td>
+                        <select class="js-save-page-bounds"
+                                data-guid="{{depot_folder.id}}"
+                                data-title='{{ (depot_folder.pathName) ? depot_folder.pathName : "" }}/{{depot_folder.name}}'>
+                            <option value="0">не выбрано</option>
+                            {% for page in catalog_pages %}
+                                <option value="{{page.id}}" {{(depot_folder.page_id == page.id) ? 'selected' : ''}}>{{page.title}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                {% set index = index + 1 %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

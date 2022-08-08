@@ -1,0 +1,24 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+{% block content %}
+<form action='/admin/pvz?act={{act}}&id={{pvz_item.id}}' method='POST'>
+    <div class="item-title">Название:</div>
+    <input type='text' name='title' value='{{pvz_item.title}}'/>
+    <div class="item-title">Координаты</div>
+    <input type='text' name='coords' value='{{pvz_item.coords}}'/>
+    <div class="item-title">Телефон:</div>
+    <input type='text' name='phone' value='{{pvz_item.phone}}'/>
+    <div class="item-title">Режим работы:</div>
+    <input type='text' name='worktime' value='{{pvz_item.worktime}}'/>
+    <div class="item-title">Описание:</div>
+    <input type='text' name='text' value='{{pvz_item.text}}'/>
+    <div class="item-title">Рейтинг:</div>
+    <input type='text' name='rate' value='{{pvz_item.rate}}'/>
+    <input type='hidden' name='id' value='{{pvz_item.id}}'>
+    <input type='submit' name='edit' value='Сохранить'>
+</form>
+{% endblock %}

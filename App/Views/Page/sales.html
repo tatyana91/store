@@ -1,0 +1,22 @@
+{% extends "/base.html" %}
+
+{% set page_title = page.title %}
+{% set page_breadcrumbs = page.breadcrumbs %}
+{% set page_banners = page.banners %}
+
+{% block page_content %}
+    <h1 class="h1">{{page.title}}</h1>
+    <div class="tinymce-content">{{page.text|raw}}</div>
+
+    <section class="content__section">
+        <div class="row m-0">
+        {% for page_child in page_childs %}
+            <div class="sale col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                <a href="/{{page_child.full_url}}" title="Подробнее">
+                    <img src="/images/banners/{{page_child.path}}" alt="">
+                </a>
+            </div>
+        {% endfor %}
+        </div>
+    </section>
+{% endblock %}

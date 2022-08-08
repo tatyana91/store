@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 70.87 70.87" style="enable-background:new 0 0 70.87 70.87;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#4985BC;}
+	.st1{fill:none;stroke:#4985BC;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st2{fill:#FFFFFF;stroke:#4985BC;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st3{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+</style>
+<g>
+	<polyline class="st1" points="17.86,21.29 59.62,21.29 53.44,42.62 23.14,42.62 15.64,13.7 7.24,13.7 	"/>
+	<circle class="st0" cx="31.71" cy="56.86" r="4.31"/>
+	<circle class="st0" cx="47.56" cy="56.86" r="4.31"/>
+	<polyline class="st1" points="50.32,49.24 24.86,49.24 20.48,32.36 	"/>
+	<line class="st1" x1="19.36" y1="28.16" x2="55.78" y2="28.16"/>
+	<line class="st1" x1="21.64" y1="35.46" x2="54.76" y2="35.46"/>
+	<line class="st1" x1="32.17" y1="21.56" x2="34.18" y2="42.38"/>
+	<line class="st1" x1="45.75" y1="21.56" x2="43.52" y2="42.38"/>
+</g>
+</svg>

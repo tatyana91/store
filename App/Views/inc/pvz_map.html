@@ -1,0 +1,49 @@
+<div id="js-map" class="map-container"></div>
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
+<script>
+    ymaps.ready(function() {
+        $.ajax({
+            url: "/index/ajax",
+            type: "POST",
+            async: true,
+            data: {
+                'act': 'get_contacts'
+            },
+            success: function(answer){
+                console.dir(answer);
+                var addresses = JSON.parse(answer);
+                var myMap = new ymaps.Map('js-map', {
+                    center: [59.968539, 30.309232],
+                    zoom: 14
+                }, {
+                    searchControlProvider: 'yandex#search'
+                });
+
+                var addressCollection = new ymaps.GeoObjectCollection();
+
+                addresses.forEach(function(address){
+                    var myPlacemark = new ymaps.Placemark(address.coords.split(','), {
+                        hintContent: address.title,
+                        balloonContent: '' +
+                            '<div class="balloon__title">' + address.title + '</div>'
+                            + '<div class="balloon__text">' + address.phone + '</div>'
+                            + '<div class="balloon__text">' + address.worktime + '</div>'
+                            + '<div class="balloon__text">' + address.text + '</div>'
+                    }, {
+                        iconLayout: 'default#image',
+                        iconImageHref: '/icons/marker.svg',
+                        iconImageSize: [51, 66],
+                        iconImageOffset: [-25, -66]
+                    });
+                    addressCollection.add(myPlacemark);
+                });
+
+                myMap.geoObjects.add(addressCollection);
+                myMap.setBounds(myMap.geoObjects.getBounds(), {
+                    checkZoomRange: true
+                });
+                myMap.behaviors.disable('scrollZoom');
+            }
+        });
+    });
+</script>

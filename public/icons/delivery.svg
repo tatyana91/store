@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 85.04 70.87" style="enable-background:new 0 0 85.04 70.87;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#4985BC;}
+	.st1{fill:none;stroke:#4985BC;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st2{fill:#FFFFFF;stroke:#4985BC;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st3{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+</style>
+<g>
+	<path class="st1" d="M51.58,50.39H20.92c-1.02,0-1.79-0.79-1.72-1.77l2.23-30.65c0.07-0.98,0.96-1.77,1.97-1.77h28.81
+		c1.02,0,1.79,0.79,1.72,1.77L51.58,50.39z"/>
+	<path class="st1" d="M73.08,50.39h-21.5l1.86-25.55h6.33c9.25,0,16.22,7.19,15.57,16.07l-0.58,7.96
+		C74.71,49.71,73.95,50.39,73.08,50.39z"/>
+	<path class="st1" d="M75.03,38.72H62.06c-0.84,0-1.47-0.65-1.41-1.46l0.9-11.98"/>
+	
+		<ellipse transform="matrix(0.8739 -0.4862 0.4862 0.8739 -20.8521 20.4085)" class="st2" cx="28.9" cy="50.39" rx="4.56" ry="4.2"/>
+	
+		<ellipse transform="matrix(0.8739 -0.4862 0.4862 0.8739 -16.4686 37.3033)" class="st2" cx="63.65" cy="50.39" rx="4.56" ry="4.2"/>
+	<line class="st1" x1="14.34" y1="23.42" x2="8.34" y2="23.42"/>
+	<line class="st1" x1="13.89" y1="29.58" x2="5.65" y2="29.58"/>
+</g>
+</svg>

@@ -1,0 +1,29 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>Характеристика</th>
+            <th>Значение</th>
+            <th>Рейтинг</th>
+        </tr>
+        </thead>
+        <tbody class="sortable" data-table="ref_chars_values">
+            {% for ref_chars_value in ref_chars_values %}
+                <tr class="js-item" data-id="{{ref_chars_value.id}}">
+                    <td>{{ref_chars_value.char_title}}</td>
+                    <td>{{ref_chars_value.value_title}}</td>
+                    <td>{{ref_chars_value.rate}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

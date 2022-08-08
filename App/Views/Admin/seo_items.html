@@ -1,0 +1,48 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>Страница</th>
+            <th>Заголовок</th>
+            <th>Ключевые слова</th>
+            <th>Описание</th>
+            <th>Управление</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for seo_item in seo_items %}
+                <tr>
+                    <td>
+                        <a href="/{{seo_item.page_full_url}}" target="_blank">{{seo_item.page_full_title}}</a>
+                    </td>
+                    <td>{{seo_item.title}}</td>
+                    <td>{{seo_item.keywords}}</td>
+                    <td>{{seo_item.description}}</td>
+                    <td class='change'>
+                        <div class="control-btn" style="display: inline-block; margin-right: 10px;">
+                            <a href='/admin/seo?act=edit&id={{seo_item.id}}' title='Редактировать'>
+                                Редактировать
+                            </a>
+                        </div>
+
+                        <div class="control-btn" style="display: inline-block; margin-right: 10px;">
+                            <a href='/admin/seo?act=delete&id={{seo_item.id}}' title='Удалить'
+                               onclick="return confirm('Вы действительно хотите удалить эту запись? Запись будет удалена без возможности восстановления')">
+                                Удалить
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

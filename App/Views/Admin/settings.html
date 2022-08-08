@@ -1,0 +1,45 @@
+{% extends "Admin/base.html" %}
+
+{% block content %}
+    <form action='/admin/settings' method='POST' enctype='multipart/form-data'>
+        <div class="item-title">Название сайта:</div>
+        <input type='text' name='site_name' value='{{settings.site_name}}' required/>
+        <div class="item-title">Подпись логотипа:</div>
+        <input type='text' name='logo_title' value='{{settings.logo_title}}' required/>
+        <div class="item-title">Подпись под логотипом в подвале:</div>
+        <input type='text' name='logo_title2' value='{{settings.logo_title2}}' required/>
+        <div class="item-title">Телефон:</div>
+        <input type='text' name='phone' value='{{settings.phone}}'/>
+        <div class="item-title">Почта:</div>
+        <input type='text' name='mail' value='{{settings.mail}}'/>
+        <div class="item-title">Почта для получения писем с сайта:</div>
+        <input type='text' name='mailsend' value='{{settings.mailsend}}'/>
+        <div class="item-title">Почта для получения заказов:</div>
+        <input type='text' name='mailorders' value='{{settings.mailorders}}'/>
+        <div class="item-title">Адрес:</div>
+        <input type='text' name='address' value='{{settings.address}}'/>
+        <div class="item-title">Город:</div>
+        <input type='text' name='city' value='{{settings.city}}'/>
+        <div class="item-title">Копирайт:</div>
+        <input type='text' name='copyright' value='{{settings.copyright}}'/>
+        <div class="item-title">Вконтакте:</div>
+        <input type='text' name='soc_vk' value='{{settings.soc_vk}}'/>
+        <div class="item-title">Инстаграм:</div>
+        <input type='text' name='soc_ins' value='{{settings.soc_ins}}'/>
+        <div class="item-title">Стоимость доставки:</div>
+        <input type='text' name='delivery_cost' value='{{settings.delivery_cost}}'/>
+        <div class="item-title">Сумма для бесплатной доставки:</div>
+        <input type='text' name='delivery_sum_free' value='{{settings.delivery_sum_free}}'/>
+        <!--Баннер (1280px*395px, перед загрузкой картинки оптимизируйте её с помощью сервиса <a href='https://tinypng.com/' target='_blank'>tinypng</a>):<br>
+        <input type='file' name='banner'/>
+        {% if (settings.banner != '') %}
+            <img src='/images/banners/{{settings.banner}}' style='max-width: 500px'/><br>
+            <input type="hidden" name="banner_path" value="{{settings.banner}}">
+        {% endif%}
+        <div class="item-title">Надпись на баннере 1 (заголовок H1):</div>
+        <input type='text' name='banner_title' value='{{settings.banner_title}}'/>
+        <div class="item-title">Надпись на баннере 2:</div>
+        <input type='text' name='banner_title2' value='{{settings.banner_title2}}'/> -->
+        <input type='submit' name='edit' value='Сохранить'>
+    </form>
+{% endblock %}

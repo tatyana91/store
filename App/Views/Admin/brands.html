@@ -1,0 +1,70 @@
+{% extends "Admin/base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block content %}
+
+<div class='table-responsive'>
+    <table id='admin_table' class='table table-striped'>
+        <thead>
+        <tr>
+            <th>Лого</th>
+            <th>Название</th>
+            <th>Ссылка</th>
+            <th>Рейтинг</th>
+            <th>Управление</th>
+        </tr>
+        </thead>
+        <tbody class="sortable" data-table="brands">
+            {% for brand in brands %}
+                {% set archived = '' %}
+                {% if brand.archived == 1 %}
+                    {% set archived = 'archived' %}
+                {% endif %}
+                <tr class="{{archived}} js-item" data-id="{{brand.id}}">
+                    <td>
+                        {% if (brand.path) %}
+                            <img src='/images/brands/{{brand.path}}' style='max-width: 100px'/>
+                        {% endif %}
+                    </td>
+                    <td>{{brand.title}}</td>
+                    <td>
+                        <a href="/brendy/{{brand.url}}" target="_blank">/brendy/{{brand.url}}</a>
+                    </td>
+                    <td>{{brand.rate}}</td>
+                    <td class='change'>
+                        <div class="control-btn">
+                            <a href='/admin/brands?act=edit&id={{brand.id}}' title='Редактировать'>
+                                Редактировать
+                            </a>
+                        </div>
+                        {% if (brand.archived == 0) %}
+                            <div class="control-btn">
+                                <a href='/admin/brands?act=add_to_achive&id={{brand.id}}' title='Поместить в архив'
+                                   onclick="return confirm('Вы действительно хотите поместить этот бренд в архив?')">
+                                    Скрыть
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="control-btn">
+                                <a href='/admin/brands?act=remove_from_achive&id={{brand.id}}' title='Восстановить из архива'
+                                   onclick="return confirm('Вы действительно хотите восстановить этот бренд из архива?')">
+                                    Восстановить
+                                </a>
+                            </div>
+                        {% endif %}
+                        <div class="control-btn">
+                            <a href='/admin/brands?act=delete&id={{brand.id}}' title='Удалить'
+                               onclick="return confirm('Вы действительно хотите удалить этот бренд? Бренд будет удален без возможности восстановления')">
+                                Удалить
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "/base.html" %}
+
+{% block title %}
+    <title>Страница 404</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <main class="content">
+        <div class="content content_inner">
+            <h1>Что-то пошло не так</h1>
+            <p class="error-page__title">404. Страница не найдена</p>
+            <p>Неправильно набран адрес или такой страницы больше не существует, а возможно никогда и не существовало.</p>
+            <p>Проверьте адрес или перейдите на <a href="/" class="error-page__link">главную страницу</a>.</p>
+        </div>
+    </main>
+</div>
+{% endblock %}

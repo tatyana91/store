@@ -1,0 +1,52 @@
+<div class="js-address" data-id="{{address.id}}">
+    <label class="input-block__item input input_width_available">
+        <span class="input__label">Регион <span class="required-asterisk">*</span></span>
+        <select class="input__control js-required" name="region">
+            {% for region in params.regions %}
+            <option value="{{region.id}}" {{(address.region == region.id) ? 'selected' : ''}}>{{region.name}}</option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <label class="input-block__item input input_width_available">
+        <span class="input__label">Город <span class="required-asterisk">*</span></span>
+        <input class="input__control js-required" name="city" value="Санкт-Петербург">
+    </label>
+
+    <label class="input-block__item input input_width_available">
+        <span class="input__label">Улица <span class="required-asterisk">*</span></span>
+        <input class="input__control js-required" type="text" name="street" value="{{address.street}}">
+    </label>
+
+    <div class="input-block__item row">
+        <label class="input col">
+            <span class="input__label">Дом <span class="required-asterisk">*</span></span>
+            <input class="input__control js-required" type="text" name="house" value="{{address.house}}">
+        </label>
+        <label class="input col">
+            <span class="input__label">Корп.</span>
+            <input class="input__control" type="text" name="corpus" value="{{address.corpus}}">
+        </label>
+        <label class="input col">
+            <span class="input__label">Стр.</span>
+            <input class="input__control" type="text" name="building" value="{{address.building}}">
+        </label>
+    </div>
+
+    <div class="input-block__item row">
+        <label class="input col">
+            <span class="input__label">Квартира <span class="required-asterisk">*</span></span>
+            <input class="input__control js-required" type="text" name="flat" value="{{address.flat}}">
+        </label>
+        <label class="input col">
+            <span class="input__label">Подъезд</span>
+            <input class="input__control" type="text" name="entrance" value="{{address.entrance}}">
+        </label>
+        <label class="input col">
+            <span class="input__label">Этаж</span>
+            <input class="input__control" type="text" name="floor" value="{{address.floor}}">
+        </label>
+    </div>
+    <div class="button button_link js-delete-address" data-id="{{address.id}}">Удалить этот адрес</div>
+    <br>
+</div>
